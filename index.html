@@ -405,6 +405,12 @@ button.ticket:active:not(:disabled){transform:translate(2px,2px);box-shadow:none
 .seg2 button{border:0;background:var(--panel);color:var(--ink);font-family:var(--display);font-weight:700;font-size:17px;padding:10px 16px;min-height:46px}
 .seg2 button+button{border-left:var(--bd)}
 .seg2 button.on{background:var(--ink);color:#FFFFFF}
+.l-lev{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;flex-basis:100%;padding-bottom:14px;border-bottom:2px dashed var(--soft)}
+.l-lab{font-weight:600}
+.seg-lev button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.15;padding:8px 18px}
+.seg-lev button small{font-family:var(--body);font-weight:600;font-size:13px;opacity:.75}
+.l-wait{background:var(--panel);border:2px dashed var(--soft);border-radius:var(--r);padding:28px 20px;text-align:center;color:var(--muted);font-weight:600}
+@media (max-width:479px){.l-lev .l-lab{flex-basis:100%}.seg-lev{display:flex;width:100%}.seg-lev button{flex:1;padding:8px 6px}}
 .lehr-page .setline{flex-wrap:wrap;gap:12px}
 .lehr-page .setline > span:first-child{font-weight:600}
 .l-teams{flex-basis:100%}
@@ -613,7 +619,7 @@ const P=(i,c)=>({i,c});
 
 const SCENARIOS = [
 /* ---------------- Klassenfahrt ---------------- */
-{ id:"fahrt", title:"Abfahrt!", name:"Die Klassenfahrt", kicker:"Thema 1",
+{ id:"fahrt", level:"mittel", title:"Abfahrt!", name:"Die Klassenfahrt", kicker:"Thema 1",
   teaser:"Ziel, Zimmer, Handyregel, Geld und ein Notfall mit Cybermobbing.",
   pitch:"Eure Klasse fährt für drei Tage weg. Ihr entscheidet, wohin es geht, wer mit wem schläft, welche Regeln gelten und was ihr tut, wenn etwas schiefgeht.",
   money:{label:"Klassenkasse", start:600}, endTitle:"Eure Klassenfahrt", lastStop:"Ankunft", homeBus:true,
@@ -709,7 +715,7 @@ const SCENARIOS = [
 ]},
 
 /* ---------------- Schulhof ---------------- */
-{ id:"hof", title:"Unser Schulhof", name:"Der neue Schulhof", kicker:"Thema 2",
+{ id:"hof", level:"mittel", title:"Unser Schulhof", name:"Der neue Schulhof", kicker:"Thema 2",
   teaser:"Spielgeräte, Fußballplatz, Barrierefreiheit, Werbung und ein Graffiti-Vorfall.",
   pitch:"Euer Schulhof wird neu gestaltet, und ihr dürft mitbestimmen. Es geht um Geld, um Platz für alle und um die Frage, wer am Ende mitspielen darf.",
   money:{label:"Schulhof-Budget", start:4000}, endTitle:"Euer neuer Schulhof", lastStop:"Eröffnung", homeBus:false,
@@ -804,7 +810,7 @@ const SCENARIOS = [
 ]},
 
 /* ---------------- Klassen-Kanal ---------------- */
-{ id:"kanal", title:"Klasse online", name:"Der Klassen-Kanal", kicker:"Thema 3",
+{ id:"kanal", level:"mittel", title:"Klasse online", name:"Der Klassen-Kanal", kicker:"Thema 3",
   teaser:"Inhalte, Fotos und Einwilligung, Hasskommentare, Macht über den Account und ein Fake-Profil.",
   pitch:"Eure Klasse startet einen eigenen Kanal auf der Schul-Website. Ihr entscheidet, was gepostet wird, wer zu sehen ist und wie ihr mit Kommentaren umgeht.",
   money:{label:"Kanal-Budget", start:300}, endTitle:"Euer Klassen-Kanal", lastStop:"Online", homeBus:false,
@@ -900,7 +906,7 @@ const SCENARIOS = [
 ]},
 
 /* ---------------- Jugendtreff ---------------- */
-{ id:"treff", title:"Unser Treff", name:"Der Jugendtreff", kicker:"Thema 4",
+{ id:"treff", level:"mittel", title:"Unser Treff", name:"Der Jugendtreff", kicker:"Thema 4",
   teaser:"Ausstattung, Öffnungszeiten, Ärger mit der Nachbarin, Eintrittsgeld und ein rassistischer Spruch.",
   pitch:"Die Gemeinde stellt euch einen leeren Raum zur Verfügung. Ihr entscheidet, was hineinkommt, wann er offen ist und wie ihr miteinander umgeht.",
   money:{label:"Treff-Kasse", start:1000}, endTitle:"Euer Jugendtreff", lastStop:"Eröffnung", homeBus:false,
@@ -998,6 +1004,530 @@ const SCENARIOS = [
 const TEAMS = ["Fuchs","Adler","Luchs","Biber","Eule","Dachs","Otter","Falke"];
 const TEAMCOL = ["#FF6B4A","#3E8EF7","#FFB23F","#4CC46B","#9B6BEF","#20C1B4","#FF4D6D","#5B6CFF"];
 
+/* ================= Unterstufe (Klasse 5 und 6): kurze Sätze, Kinderrechte als Bezug ================= */
+const KRK = (n,txt) => "UN-Kinderrechtskonvention, Artikel "+n;
+SCENARIOS.push(
+/* ---------------- Wandertag ---------------- */
+{ id:"wandertag", level:"unter", title:"Wandertag!", name:"Der Wandertag",
+  teaser:"Ziel, Gruppen, eine lange Strecke, Eintrittsgeld und ein peinliches Video.",
+  pitch:"Eure Klasse macht einen Wandertag. Ihr entscheidet, wohin es geht, wer mit wem läuft und was ihr tut, wenn etwas schiefgeht.",
+  money:{label:"Klassenkasse", start:150}, endTitle:"Euer Wandertag", lastStop:"Ziel erreicht", homeBus:false,
+  heikel:"Station 3: Ein Kind hat Asthma und schafft lange Wege nicht. Station 4: Zwei Kinder können den Eintritt nicht bezahlen. Station 5: Ein Kind wird gefilmt und soll im Klassenchat bloßgestellt werden.",
+  events:{0:{title:"Geld vom Förderverein", text:"Der Förderverein schenkt euch 30 € für den Wandertag.", d:30},
+          2:{title:"Der Bus wird teurer", text:"Die Busfahrt kostet 20 € mehr als gedacht.", d:-20}},
+  rounds:[
+ { stop:"Ziel", ground:"grass", arts:[P("paw","#FFB23F"),P("climb","#3E8EF7"),P("tree","#4CC46B"),P("drop","#20C1B4")], place:"Vor der Schule", typ:"Wünsche sammeln", time:240, title:"Wohin geht der Wandertag?",
+   text:"Ihr habt 150 € in der Klassenkasse. Wohin soll es gehen?",
+   options:[
+    {t:"Tierpark", s:"Tierpark", d:"Tiere füttern und streicheln. Eintritt für alle.", cost:-90, zus:2, folge:"Ihr geht in den Tierpark. Die Ziegen fressen euch fast die Brotzeit weg."},
+    {t:"Kletterwald", s:"Kletterwald", d:"Aufregend und hoch. Nicht alle trauen sich.", cost:-120, zus:0, warn:"Wer Höhenangst hat, kann nur zuschauen.", folge:"Ihr geht in den Kletterwald. Die Mutigen sind begeistert, ein paar stehen nur unten."},
+    {t:"Waldspielplatz mit Picknick", s:"Waldspielplatz", d:"Bauen, rennen, picknicken. Fast kostenlos.", cost:-20, zus:4, folge:"Ihr baut im Wald eine riesige Hütte. Alle machen mit."},
+    {t:"Freibad", s:"Freibad", d:"Schwimmen und Rutschen. Nur bei schönem Wetter.", cost:-60, zus:1, folge:"Ihr geht ins Freibad. Wer nicht gut schwimmt, bleibt meistens am Rand."}
+   ], fallback:2,
+   recht:{art:KRK(31), text:"Alle Kinder haben das Recht auf Spiel, Freizeit und Erholung.", frage:"Können bei eurem Ziel wirklich alle mitmachen?"},
+   tipps:"Zum Warmwerden. Fragt auch die Stillen nach ihrem Wunsch, nicht nur die Lauten."},
+ { stop:"Gruppen", ground:"grass", arts:[P("heart","#FF4D6D"),P("jar","#20C1B4"),P("whistle","#FFB23F"),P("smile","#4CC46B")], place:"Auf dem Schulhof", typ:"Persönlich betroffen", time:240, title:"Wer läuft mit wem?",
+   special:[{name:"Finn", mood:"frage", style:"short", skin:1, hair:3}],
+   text:"Ihr lauft in Vierergruppen. Finn ist neu in der Klasse und kennt noch niemanden gut. Wie bildet ihr die Gruppen?",
+   options:[
+    {t:"Jeder wählt selbst", s:"Selbst wählen", sp:"out", d:"Freunde laufen zusammen.", cost:0, zus:-3, warn:"Finn bleibt vielleicht übrig.", folge:"Alle suchen ihre Freunde. Finn steht am Ende allein da."},
+    {t:"Gruppen auslosen", s:"Auslosen", sp:"in", d:"Zettel ziehen, Zufall entscheidet.", cost:0, zus:2, folge:"Die Gruppen werden gelost. Finn läuft mit drei Kindern, die er noch nicht kannte."},
+    {t:"Die Lehrkraft teilt ein", s:"Lehrkraft teilt ein", sp:"in", d:"Die Lehrkraft macht die Gruppen.", cost:0, zus:0, folge:"Die Lehrkraft teilt ein. Es passt, aber manche maulen."},
+    {t:"Jede Gruppe nimmt jemand Neues auf", s:"Jemand Neues", sp:"in", d:"Freunde dürfen zu zweit bleiben, dazu kommen zwei andere.", cost:0, zus:4, folge:"Jede Gruppe mischt sich. Finn lernt an einem Tag drei neue Leute kennen."}
+   ], fallback:2,
+   recht:{art:KRK(2), text:"Kein Kind darf benachteiligt oder ausgeschlossen werden.", frage:"Fühlt sich Finn mit eurer Regel willkommen?"},
+   tipps:"Sprecht über Finn, nicht über echte Kinder aus der Klasse. Fragt: Wie fühlt es sich an, übrig zu bleiben?"},
+ { stop:"Strecke", ground:"grass", arts:[P("stairs","#9AA3B5"),P("arrows","#3E8EF7"),P("bike","#FF6B4A"),P("people","#FF7FB0")], place:"Am Waldrand", typ:"Mit Fakten", time:240, title:"Wie weit laufen wir?",
+   special:[{name:"Jan", mood:"frage", style:"curly", skin:4, hair:4}],
+   text:"Der Weg ist lang und steil. Was macht ihr?",
+   facts:["Die ganze Strecke ist 8 Kilometer lang und geht steil bergauf.","Jan hat Asthma. Lange Steigungen schafft er nicht.","Ein Bus fährt bis zur Hälfte des Weges. Das kostet 20 €."],
+   options:[
+    {t:"Alle laufen die ganze Strecke", s:"Ganze Strecke", sp:"out", d:"Wer nicht kann, wartet unten.", cost:0, zus:-5, warn:"Jan wird ausgeschlossen, nur weil er krank ist.", folge:"Die Klasse läuft los. Jan wartet mit einer Lehrkraft drei Stunden am Parkplatz."},
+    {t:"Kürzere Strecke für alle", s:"Kürzer für alle", sp:"in", d:"Alle laufen 4 Kilometer, flach.", cost:0, zus:4, folge:"Ihr nehmt den flachen Weg. Alle kommen gemeinsam an."},
+    {t:"Mit dem Bus die Hälfte fahren", s:"Bus zur Hälfte", sp:"in", d:"Alle fahren ein Stück, dann laufen alle.", cost:-20, zus:3, folge:"Ihr fahrt bis zur Hälfte. Den Rest schaffen alle."},
+    {t:"Zwei Gruppen: lang und kurz", s:"Lang und kurz", sp:"warn", d:"Jeder wählt selbst, wie weit.", cost:0, zus:1, folge:"Die meisten laufen lang. Jan ist mit drei anderen in der kurzen Gruppe. Am Ziel trefft ihr euch."}
+   ], fallback:1,
+   recht:{art:KRK(23), text:"Kinder mit Krankheit oder Behinderung sollen überall mitmachen können.", frage:"Kann Jan mit eurer Lösung wirklich dabei sein?"},
+   tipps:"Neu ist: Die Fakten müssen in die Entscheidung. Fragt nach, ob Jans Situation in der Diskussion vorkam."},
+ { stop:"Eintritt", ground:"asphalt", arts:[P("coins","#FFB23F"),P("cake","#FF7FB0"),P("lock","#9AA3B5"),P("tree","#4CC46B")], place:"Klassenzimmer", typ:"Fakten und Gerechtigkeit", time:180, title:"Nicht alle können zahlen",
+   special:[{name:"Lia", mood:"frage", style:"braids", skin:5, hair:4},{name:"Ole", mood:"frage", style:"cap", skin:0, hair:3}],
+   text:b=>"Jedes Kind soll 8 € Eintritt mitbringen. Lia und Ole sagen leise, dass das bei ihnen zu Hause nicht geht. In der Klassenkasse sind gerade "+euro(b)+".",
+   options:[
+    {t:"Die Klassenkasse bezahlt", s:"Kasse zahlt", sp:"in", d:"Für Lia und Ole. Niemand muss es wissen.", cost:-16, zus:3, folge:"Die Kasse bezahlt still. Lia und Ole kommen mit, ohne dass jemand darüber redet."},
+    {t:"Kuchenverkauf", s:"Kuchenverkauf", sp:"in", d:"Alle backen, in der Pause wird verkauft.", cost:30, zus:4, folge:"Der Kuchenverkauf bringt 30 €. Alle haben mitgebacken."},
+    {t:"Wer nicht zahlt, bleibt da", s:"Wer nicht zahlt", sp:"out", d:"Regel ist Regel.", cost:0, zus:-7, warn:"Kein Kind darf wegen Geld ausgeschlossen werden.", folge:"Lia und Ole bleiben in der Schule. Es ist ein komischer Tag für alle."},
+    {t:"Ein Ziel ohne Eintritt", s:"Ohne Eintritt", sp:"in", d:"Ihr ändert den Plan, damit es nichts kostet.", cost:0, zus:2, folge:"Ihr geht dorthin, wo es nichts kostet. Ein paar sind enttäuscht, aber alle sind dabei."}
+   ], fallback:0,
+   recht:{art:KRK(2), text:"Kein Kind darf benachteiligt werden, auch nicht, weil seine Familie wenig Geld hat.", frage:"Sind Lia und Ole mit eurer Lösung wirklich dabei, ohne sich zu schämen?"},
+   tipps:"Achtet darauf, dass niemand in der echten Klasse wegen Geld bloßgestellt wird. Sprecht nur über Lia und Ole."},
+ { stop:"Notfall", ground:"night", arts:[P("eyeoff","#FF4D6D"),P("heart","#FF6B4A"),P("flag","#20C1B4"),P("smile","#FFB23F")], place:"Auf dem Rückweg", typ:"Notfall mit wenig Zeit", time:120, title:"Ein peinliches Video",
+   special:[{name:"Tom", mood:"schlecht", style:"short", skin:2, hair:1, sit:true}],
+   text:"Tom rutscht aus und fällt in eine Matschpfütze. Jemand hat es gefilmt und will das Video gleich in die Klassengruppe schicken. Tom weint. Ihr habt zwei Minuten.",
+   options:[
+    {t:"Video schicken, ist doch lustig", s:"Video schicken", sp:"out", d:"Alle sollen lachen können.", cost:0, zus:-8, warn:"Niemand darf ohne Erlaubnis gefilmt und bloßgestellt werden.", folge:"Das Video geht herum. Tom will am nächsten Tag nicht in die Schule."},
+    {t:"Video löschen und Tom helfen", s:"Löschen und helfen", sp:"in", d:"Erst Tom, dann das Handy.", cost:0, zus:6, folge:"Das Video wird gelöscht. Zwei Kinder helfen Tom und geben ihm eine trockene Jacke."},
+    {t:"Sofort die Lehrkraft holen", s:"Lehrkraft holen", sp:"in", d:"Erwachsene helfen, wenn es ernst wird.", cost:0, zus:4, folge:"Die Lehrkraft kommt sofort. Das Video wird gelöscht, alle reden darüber."},
+    {t:"Nichts tun", s:"Nichts tun", sp:"out", d:"Geht mich ja nichts an.", cost:0, zus:-5, folge:"Niemand macht etwas. Das Video landet doch in der Gruppe."}
+   ], fallback:2,
+   recht:{art:KRK(16), text:"Jedes Kind hat das Recht auf Privatsphäre und darauf, nicht bloßgestellt zu werden.", frage:"Habt ihr Tom geschützt?"},
+   tipps:"Wenig Zeit. Danach in Ruhe besprechen: Wer schaut zu, wer hilft? Achtet darauf, dass sich niemand aus der echten Klasse angesprochen fühlt."}
+]},
+
+/* ---------------- Klassenzimmer ---------------- */
+{ id:"zimmer", level:"unter", title:"Unser Zimmer", name:"Das Klassenzimmer",
+  teaser:"Einrichtung, Sitzordnung, Klassendienste, Frühstücksgeld und ein gemeiner Spitzname.",
+  pitch:"Euer Klassenzimmer soll schöner werden. Ihr entscheidet, was hineinkommt, wer wo sitzt und wie ihr miteinander umgeht.",
+  money:{label:"Klassenkasse", start:200}, endTitle:"Euer Klassenzimmer", lastStop:"Fertig!", homeBus:false,
+  heikel:"Station 4: Eine Familie kann das Frühstücksgeld nicht bezahlen. Station 5: Ein Kind wird mit einem gemeinen Spitznamen gehänselt.",
+  events:{0:{title:"Spende vom Elternabend", text:"Beim Elternabend kommen 40 € zusammen.", d:40},
+          2:{title:"Etwas geht kaputt", text:"Ein Stuhl ist kaputt. Ein neuer kostet 30 €.", d:-30}},
+  rounds:[
+ { stop:"Einrichtung", ground:"wood", arts:[P("book","#3E8EF7"),P("sofa","#9B6BEF"),P("plant","#4CC46B"),P("paw","#FFB23F")], place:"Euer Klassenzimmer", typ:"Wünsche sammeln", time:240, title:"Was kommt ins Klassenzimmer?",
+   text:"Ihr habt 200 € für euer Klassenzimmer. Was kauft ihr zuerst?",
+   options:[
+    {t:"Leseecke mit Regal", s:"Leseecke", d:"Bücher, Kissen, eine Lampe.", cost:-80, zus:3, folge:"Die Leseecke ist fertig. In der Regenpause ist sie immer voll."},
+    {t:"Sitzsäcke", s:"Sitzsäcke", d:"Bequem, aber nicht genug für alle.", cost:-120, zus:0, warn:"Es gibt Streit, wer drauf sitzen darf.", folge:"Die Sitzsäcke sind da. Jeden Morgen gibt es ein Wettrennen um die besten Plätze."},
+    {t:"Pflanzen", s:"Pflanzen", d:"Grün fürs Zimmer. Jemand muss gießen.", cost:-40, zus:2, folge:"Das Zimmer wird grün. Nach zwei Wochen ist die erste Pflanze vertrocknet."},
+    {t:"Aquarium", s:"Aquarium", d:"Fische zum Beobachten. Teuer und viel Pflege.", cost:-150, zus:1, warn:"Fische brauchen auch in den Ferien Pflege. Wer kümmert sich?", folge:"Das Aquarium steht. Alle lieben die Fische, aber in den Ferien muss jemand kommen."}
+   ], fallback:0,
+   recht:{art:KRK(12), text:"Kinder dürfen bei Dingen, die sie betreffen, ihre Meinung sagen. Ihre Meinung muss ernst genommen werden.", frage:"Wurden bei eurer Entscheidung alle gefragt?"},
+   tipps:"Zum Warmwerden. Wer mag, kann eine eigene Idee als Ideeninsel einbringen."},
+ { stop:"Sitzplätze", ground:"wood", arts:[P("heart","#FF4D6D"),P("jar","#20C1B4"),P("whistle","#FFB23F"),P("eye","#3E8EF7")], place:"Euer Klassenzimmer", typ:"Persönlich betroffen", time:240, title:"Wer sitzt wo?",
+   special:[{name:"Elif", mood:"frage", style:"long", skin:2, hair:0, glasses:true}],
+   text:"Die Sitzordnung wird neu gemacht. Elif sieht schlecht und kann von hinten die Tafel nicht lesen. Wie macht ihr es?",
+   options:[
+    {t:"Jeder sucht sich seinen Platz", s:"Freie Wahl", sp:"warn", d:"Freunde sitzen zusammen.", cost:0, zus:0, warn:"Vorne sind die Plätze vielleicht schon weg.", folge:"Alle rennen zu ihren Freunden. Elif bekommt einen Platz ganz hinten."},
+    {t:"Jede Woche neu auslosen", s:"Auslosen", sp:"warn", d:"Jeder sitzt mal überall.", cost:0, zus:1, folge:"Jede Woche wird gelost. Wenn Elif hinten landet, tauscht sie mit jemandem."},
+    {t:"Die Lehrkraft bestimmt", s:"Lehrkraft bestimmt", sp:"in", d:"Die Lehrkraft macht einen Plan.", cost:0, zus:-1, folge:"Die Lehrkraft macht den Plan. Elif sitzt vorne, aber viele sind unzufrieden."},
+    {t:"Wer es braucht, sitzt vorne, sonst frei", s:"Erst wer es braucht", sp:"in", d:"Erst Elif und andere mit Bedarf, dann wählen alle.", cost:0, zus:4, folge:"Elif und zwei andere bekommen Plätze vorne. Danach wählen alle frei."}
+   ], fallback:2,
+   recht:{art:KRK(28), text:"Jedes Kind hat das Recht auf Bildung. Alle sollen gut lernen können.", frage:"Kann Elif mit eurer Regel gut lernen?"},
+   tipps:"Sprecht über Elif. Fragt: Was brauchen andere Kinder, um gut lernen zu können?"},
+ { stop:"Dienste", ground:"tiles", arts:[P("star","#FFB23F"),P("calendar","#3E8EF7"),P("whistle","#FF6B4A"),P("broom","#20C1B4")], place:"Euer Klassenzimmer", typ:"Mit Fakten", time:240, title:"Wer macht die Klassendienste?",
+   text:"Tafel wischen, Blumen gießen, Müll rausbringen: Wer übernimmt das?",
+   facts:["Es gibt 5 Dienste und 26 Kinder.","Letzte Woche hat niemand den Müll rausgebracht.","Immer dieselben drei Kinder melden sich freiwillig."],
+   options:[
+    {t:"Wer will, meldet sich", s:"Freiwillig", d:"Nur wer Lust hat.", cost:0, zus:-2, warn:"Die Arbeit bleibt an wenigen hängen.", folge:"Wieder melden sich dieselben drei. Sie sind genervt."},
+    {t:"Ein Wechselplan für alle", s:"Wechselplan", d:"Jede Woche sind andere dran.", cost:0, zus:4, folge:"Der Plan hängt an der Tür. Jeder ist mal dran, und es klappt."},
+    {t:"Die Lehrkraft bestimmt", s:"Lehrkraft bestimmt", d:"Sie sagt jeden Tag, wer dran ist.", cost:0, zus:0, folge:"Die Lehrkraft verteilt die Dienste. Es klappt, aber niemand fühlt sich verantwortlich."},
+    {t:"Wer stört, muss Dienst machen", s:"Dienst als Strafe", d:"Dienste als Strafe.", cost:0, zus:-4, warn:"Dienste für die Gemeinschaft werden so zur Strafe.", folge:"Wer stört, wischt die Tafel. Bald will niemand mehr freiwillig helfen."}
+   ], fallback:2,
+   recht:{art:KRK(12), text:"Kinder dürfen mitbestimmen, wie das Zusammenleben in ihrer Gruppe geregelt wird.", frage:"Ist eure Regel fair für alle 26 Kinder?"},
+   tipps:"Neu ist: Die Fakten sollen in die Entscheidung. Fragt: Wer hat die drei Freiwilligen eigentlich gefragt?"},
+ { stop:"Frühstück", ground:"wood", arts:[P("coins","#FFB23F"),P("jar","#20C1B4"),P("recycle","#4CC46B"),P("lock","#9AA3B5")], place:"Euer Klassenzimmer", typ:"Fakten und Gerechtigkeit", time:180, title:"Geld fürs Klassenfrühstück",
+   special:[{name:"Sami", mood:"frage", style:"curly", skin:3, hair:0}],
+   text:b=>"Jeden Freitag gibt es ein Klassenfrühstück. Jedes Kind soll dafür 2 € im Monat zahlen. Samis Familie kann das gerade nicht. In der Kasse sind "+euro(b)+".",
+   options:[
+    {t:"Alle zahlen gleich viel", s:"Alle gleich", sp:"out", d:"2 € für jeden, ohne Ausnahme.", cost:0, zus:-5, warn:"Sami kann dann nicht mitessen.", folge:"Sami sitzt beim Frühstück daneben. Die Stimmung ist gedrückt."},
+    {t:"Wer kann, gibt mehr", s:"Wer kann, gibt mehr", sp:"in", d:"Eine Spardose, jeder gibt, was geht.", cost:20, zus:4, folge:"In der Spardose landet sogar mehr als vorher. Niemand weiß, wer wie viel gegeben hat."},
+    {t:"Flohmarkt machen", s:"Flohmarkt", sp:"in", d:"Ihr verkauft alte Spielsachen.", cost:40, zus:3, folge:"Der Flohmarkt bringt 40 €. Das Frühstück ist für Monate bezahlt."},
+    {t:"Frühstück abschaffen", s:"Abschaffen", sp:"warn", d:"Dann muss niemand zahlen.", cost:0, zus:-2, folge:"Kein Frühstück mehr. Gerecht, aber alle vermissen es."}
+   ], fallback:1,
+   recht:{art:KRK(2), text:"Kein Kind darf benachteiligt werden, auch nicht wegen Geld.", frage:"Kann Sami mit eurer Lösung dabei sein, ohne sich zu schämen?"},
+   tipps:"Achtet darauf, dass niemand aus der echten Klasse wegen Geld angesprochen wird."},
+ { stop:"Notfall", ground:"night", arts:[P("chat","#3E8EF7"),P("shield","#FF4D6D"),P("people","#20C1B4"),P("whistle","#FFB23F")], place:"Kurz vor der Stunde", typ:"Notfall mit wenig Zeit", time:120, title:"Ein gemeiner Spitzname",
+   special:[{name:"Nele", mood:"schlecht", style:"bun", skin:0, hair:5, glasses:true, sit:true}],
+   text:"Seit Tagen nennen ein paar Kinder Nele „Brillenschlange“. Heute weint sie in der Pause. In zwei Minuten beginnt der Unterricht.",
+   options:[
+    {t:"Mitlachen, ist doch nur Spaß", s:"Mitlachen", sp:"out", d:"So schlimm ist das nicht.", cost:0, zus:-8, warn:"Hänseln verletzt. Was für die einen Spaß ist, tut anderen weh.", folge:"Die Kinder machen weiter. Nele sitzt ab jetzt immer allein."},
+    {t:"Laut „Stopp“ sagen", s:"Stopp sagen", sp:"in", d:"Mehrere sagen: Das geht so nicht.", cost:0, zus:5, folge:"Vier Kinder stellen sich neben Nele und sagen Stopp. Die anderen hören auf."},
+    {t:"Klassenrat einberufen", s:"Klassenrat", sp:"in", d:"Gleich in der Stunde darüber reden.", cost:0, zus:6, folge:"Im Klassenrat sagt Nele, wie es ihr geht. Die Kinder entschuldigen sich."},
+    {t:"Lehrkraft holen", s:"Lehrkraft holen", sp:"in", d:"Eine Erwachsene soll helfen.", cost:0, zus:3, folge:"Die Lehrkraft kommt und spricht mit allen. Nele fühlt sich geschützt."}
+   ], fallback:3,
+   recht:{art:KRK(19), text:"Kinder müssen vor Gewalt geschützt werden. Dazu gehört auch, dass niemand gemein beschimpft wird.", frage:"Wie geht es Nele nach eurer Entscheidung?"},
+   tipps:"Wenig Zeit. Danach in Ruhe besprechen. Achtet darauf, dass sich niemand aus der echten Klasse angesprochen fühlt."}
+]},
+
+/* ---------------- Pausenspiele ---------------- */
+{ id:"pause", level:"unter", title:"Pausen-Spaß", name:"Die Pausenkiste",
+  teaser:"Spielsachen, Ausleihe, verlorene Bälle, Ruhezone und ein Schubser.",
+  pitch:"Eure Schule bekommt eine Pausenkiste mit Spielsachen. Ihr entscheidet, was hineinkommt, wer es bekommt und welche Regeln gelten.",
+  money:{label:"Pausen-Geld", start:300}, endTitle:"Eure Pausenkiste", lastStop:"Pause!", homeBus:false,
+  heikel:"Station 2: Ältere nehmen den Jüngeren alles weg. Station 5: Ein Kind wird vom Klettergerüst geschubst und verletzt sich leicht.",
+  events:{0:{title:"Ein Sportgeschäft hilft", text:"Ein Sportgeschäft schenkt euch Bälle im Wert von 40 €.", d:40},
+          2:{title:"Neue Seile", text:"Zwei Springseile sind gerissen. Neue kosten 25 €.", d:-25}},
+  rounds:[
+ { stop:"Kiste", ground:"asphalt", arts:[P("ball","#FF6B4A"),P("racket","#3E8EF7"),P("brush","#FFB23F"),P("book","#4CC46B")], place:"Der Pausenhof", typ:"Wünsche sammeln", time:240, title:"Was kommt in die Pausenkiste?",
+   text:"Ihr habt 300 €. Was kauft ihr?",
+   options:[
+    {t:"Bälle und Springseile", s:"Bälle und Seile", d:"Für viele Spiele.", cost:-60, zus:3, folge:"Die Kiste ist voller Bälle und Seile. Jede Pause ist etwas los."},
+    {t:"Tischtennisplatte", s:"Tischtennis", d:"Groß und teuer. Nur vier spielen gleichzeitig.", cost:-250, zus:0, warn:"Nur wenige können gleichzeitig spielen.", folge:"Die Platte steht. Vor ihr ist immer eine lange Schlange."},
+    {t:"Straßenkreide", s:"Kreide", d:"Malen und Hüpfspiele.", cost:-20, zus:2, folge:"Der Hof wird bunt. Bis zum nächsten Regen."},
+    {t:"Ruhekiste mit Büchern", s:"Ruhekiste", d:"Bücher und Spiele für Ruhige.", cost:-50, zus:3, folge:"Die Ruhekiste ist da. Endlich haben auch die Leisen etwas."}
+   ], fallback:0,
+   recht:{art:KRK(31), text:"Alle Kinder haben das Recht auf Spiel und Freizeit.", frage:"Ist in eurer Kiste für jedes Kind etwas dabei?"},
+   tipps:"Zum Warmwerden. Fragt: Was spielen die, die sonst am Rand stehen?"},
+ { stop:"Ausleihe", ground:"asphalt", arts:[P("bolt","#FF6B4A"),P("calendar","#3E8EF7"),P("people","#FF7FB0"),P("whistle","#FFB23F")], place:"Der Pausenhof", typ:"Persönlich betroffen", time:240, title:"Wer bekommt die Sachen?",
+   special:[{name:"Paul", mood:"frage", style:"cap", skin:1, hair:2}],
+   text:"Die Großen aus Klasse 6 sind immer zuerst an der Kiste. Paul aus Klasse 5 bekommt nie einen Ball. Welche Regel gilt?",
+   options:[
+    {t:"Wer zuerst kommt", s:"Wer zuerst kommt", sp:"out", d:"Keine Regel.", cost:0, zus:-4, warn:"Die Schnellsten und Größten bekommen immer alles.", folge:"Alles bleibt, wie es war. Paul geht wieder leer aus."},
+    {t:"Feste Tage für jede Klasse", s:"Feste Tage", sp:"in", d:"Montag Klasse 5, Dienstag Klasse 6 …", cost:0, zus:3, folge:"Am Montag gehört die Kiste Klasse 5. Paul spielt endlich Fußball."},
+    {t:"Pausenhelfer verteilen", s:"Pausenhelfer", sp:"in", d:"Kinder aus beiden Klassen geben die Sachen aus.", cost:0, zus:4, folge:"Die Pausenhelfer achten darauf, dass jeder mal dran ist."},
+    {t:"Die Aufsicht verteilt", s:"Aufsicht verteilt", sp:"in", d:"Die Lehrkraft entscheidet.", cost:0, zus:0, folge:"Die Aufsicht verteilt die Sachen. Es klappt, aber sie hat kaum noch Zeit für anderes."}
+   ], fallback:3,
+   recht:{art:KRK(2), text:"Kein Kind darf benachteiligt werden, auch nicht, weil es jünger oder kleiner ist.", frage:"Bekommt Paul mit eurer Regel eine faire Chance?"},
+   tipps:"Fragt die Klasse: Wer kennt das, immer übrig zu bleiben?"},
+ { stop:"Verloren", ground:"asphalt", arts:[P("check","#4CC46B"),P("coins","#FFB23F"),P("lock","#9AA3B5"),P("heart","#FF4D6D")], place:"Der Pausenhof", typ:"Mit Fakten", time:240, title:"Bälle sind weg",
+   text:"Nach vier Wochen fehlt einiges. Was tut ihr?",
+   facts:["6 Bälle sind verschwunden, 2 Seile sind kaputt.","Ersatz kostet 60 €.","Niemand weiß, wer die Sachen verloren hat."],
+   options:[
+    {t:"Ausleihe nur mit Namensliste", s:"Namensliste", d:"Wer etwas nimmt, trägt sich ein.", cost:-60, zus:3, folge:"Mit der Liste verschwindet kaum noch etwas."},
+    {t:"Wer etwas verliert, bezahlt", s:"Selbst bezahlen", d:"Die Familie muss Ersatz kaufen.", cost:0, zus:-3, warn:"Nicht alle Familien können das bezahlen.", folge:"Viele trauen sich nicht mehr, etwas auszuleihen."},
+    {t:"Nichts mehr ausleihen", s:"Kiste zu", d:"Die Kiste bleibt zu.", cost:0, zus:-5, warn:"Alle werden bestraft, auch wer nichts getan hat.", folge:"Die Kiste bleibt zu. Die Pausen sind wieder langweilig."},
+    {t:"Ersatz kaufen und ein Pflege-Team", s:"Pflege-Team", d:"Kinder kümmern sich um die Kiste.", cost:-60, zus:4, folge:"Das Pflege-Team zählt jeden Tag nach. Alle passen besser auf."}
+   ], fallback:0,
+   recht:{art:KRK(12), text:"Kinder dürfen bei Regeln, die sie betreffen, mitreden.", frage:"Ist eure Regel fair für alle, auch für die, die nichts verloren haben?"},
+   tipps:"Neu ist: Die Fakten sollen in die Entscheidung. Fragt: Ist es fair, alle zu bestrafen?"},
+ { stop:"Ruhe", ground:"grass", arts:[P("wall","#FF6B4A"),P("calendar","#3E8EF7"),P("book","#4CC46B"),P("recycle","#9AA3B5")], place:"Der Pausenhof", typ:"Fakten und Gerechtigkeit", time:180, title:"Platz für die Ruhigen",
+   special:[{name:"Ida", mood:"frage", style:"braids", skin:3, hair:0}],
+   text:"Ida liest in der Pause gern. Ständig fliegen Bälle in ihre Ecke. Die Ballspieler sagen: Der Hof ist für alle da.",
+   options:[
+    {t:"Ballzone und Ruhezone trennen", s:"Zonen trennen", sp:"in", d:"Mit Kreide und Schildern.", cost:-30, zus:4, folge:"Der Hof bekommt zwei Zonen. Ida liest in Ruhe, die anderen spielen weiter."},
+    {t:"Ballspiele nur jeden zweiten Tag", s:"Jeden 2. Tag", sp:"in", d:"Abwechselnd Ruhe und Toben.", cost:0, zus:1, folge:"An Balltagen ist es laut, an den anderen ruhig. Manche sind unzufrieden."},
+    {t:"Ruhige gehen in die Bücherei", s:"Ab in die Bücherei", sp:"out", d:"Der Hof gehört den Ballspielern.", cost:0, zus:-3, warn:"Ida muss weg, damit andere spielen können.", folge:"Ida geht in die Bücherei. Auf dem Hof fehlt sie niemandem, aber ihr fehlt die frische Luft."},
+    {t:"Nichts ändern", s:"Nichts ändern", sp:"out", d:"Wird schon gehen.", cost:0, zus:-2, folge:"Es bleibt, wie es ist. Ida bekommt wieder einen Ball ab."}
+   ], fallback:0,
+   recht:{art:KRK(31), text:"Alle Kinder haben das Recht auf Spiel, Freizeit und Erholung, auch die, die Ruhe brauchen.", frage:"Hat bei euch jedes Kind seinen Platz in der Pause?"},
+   tipps:"Fragt: Wer braucht in der Pause eher Ruhe, wer eher Bewegung? Beides ist in Ordnung."},
+ { stop:"Notfall", ground:"asphalt", arts:[P("shield","#FF4D6D"),P("megaphone","#FF6B4A"),P("eyeoff","#9AA3B5"),P("people","#20C1B4")], place:"Am Klettergerüst", typ:"Notfall mit wenig Zeit", time:120, title:"Ein Schubser am Klettergerüst",
+   special:[{name:"Mila", mood:"schlecht", style:"long", skin:4, hair:4, sit:true}],
+   text:"Ein Kind aus Klasse 6 schubst Mila vom Klettergerüst, weil sie „zu langsam“ ist. Mila hat sich das Knie aufgeschlagen und weint. Die Pause ist in zwei Minuten vorbei.",
+   options:[
+    {t:"Pausenaufsicht holen und Mila helfen", s:"Hilfe holen", sp:"in", d:"Erst Mila, dann der Rest.", cost:0, zus:6, folge:"Die Aufsicht kommt sofort und versorgt Milas Knie. Sie spricht danach mit dem anderen Kind."},
+    {t:"Das andere Kind anschreien", s:"Anschreien", sp:"warn", d:"Zurückbrüllen, damit es lernt.", cost:0, zus:-2, warn:"Wut macht den Streit oft größer.", folge:"Es gibt Geschrei. Mila sitzt immer noch mit blutigem Knie da."},
+    {t:"Wegschauen", s:"Wegschauen", sp:"out", d:"Ist ja nicht mein Problem.", cost:0, zus:-6, folge:"Niemand hilft. Mila humpelt allein ins Schulhaus."},
+    {t:"Regeln fürs Klettergerüst machen", s:"Neue Regeln", sp:"in", d:"Nachher gemeinsam Regeln aufschreiben.", cost:0, zus:3, folge:"Ihr schreibt Regeln für das Gerüst. Aber Mila hat gerade jetzt Schmerzen."}
+   ], fallback:0,
+   recht:{art:KRK(19), text:"Kinder müssen vor Gewalt geschützt werden.", frage:"Wer hat Mila geholfen, und wer hätte noch helfen können?"},
+   tipps:"Wenig Zeit. Danach besprechen: Was ist bei einem Unfall wichtiger, Hilfe oder Strafe?"}
+]},
+
+/* ---------------- Klassenfest ---------------- */
+{ id:"fest", level:"unter", title:"Wir feiern!", name:"Das Klassenfest",
+  teaser:"Motto, laute Musik, Essen für alle, Aufräumen und ein Kind, das nicht mitspielen darf.",
+  pitch:"Eure Klasse feiert ein Fest. Ihr entscheidet, wie es wird, wer was macht und wie ihr dafür sorgt, dass alle Spaß haben.",
+  money:{label:"Festkasse", start:120}, endTitle:"Euer Klassenfest", lastStop:"Party!", homeBus:false,
+  heikel:"Station 2: Ein Kind verträgt laute Geräusche schlecht. Station 3: Allergie und Essensregeln aus religiösen Gründen. Station 5: Ein Kind wird beim Spielen ausgeschlossen.",
+  events:{0:{title:"Spende vom Bäcker", text:"Der Bäcker an der Ecke schenkt euch Brezeln im Wert von 20 €.", d:20},
+          2:{title:"Deko kaputt", text:"Die Lichterkette ist kaputt. Eine neue kostet 15 €.", d:-15}},
+  rounds:[
+ { stop:"Motto", ground:"wood", arts:[P("music","#9B6BEF"),P("gamepad","#3E8EF7"),P("star","#FFB23F"),P("tree","#4CC46B")], place:"Die Aula", typ:"Wünsche sammeln", time:240, title:"Was für ein Fest wird es?",
+   text:"Ihr habt 120 € in der Festkasse. Welches Motto nehmt ihr?",
+   options:[
+    {t:"Disco", s:"Disco", d:"Musik, Lichter, Tanzen.", cost:-60, zus:1, folge:"Es wird eine Disco. Die Tänzer sind glücklich, ein paar stehen am Rand."},
+    {t:"Spielenachmittag", s:"Spielenachmittag", d:"Brettspiele, Quiz und Stationen.", cost:-30, zus:3, folge:"Es wird ein Spielenachmittag. An jedem Tisch wird gelacht."},
+    {t:"Kostümparty", s:"Kostümparty", d:"Alle verkleiden sich.", cost:-40, zus:2, folge:"Es wird eine Kostümparty. Die Kostüme sind großartig."},
+    {t:"Picknick im Park", s:"Picknick", d:"Draußen, mit Decken und Spielen.", cost:-20, zus:3, folge:"Es wird ein Picknick im Park. Zum Glück scheint die Sonne."}
+   ], fallback:1,
+   recht:{art:KRK(31), text:"Alle Kinder haben das Recht auf Spiel, Freizeit und Feiern.", frage:"Macht euer Fest allen Spaß, nicht nur den meisten?"},
+   tipps:"Zum Warmwerden. Wer mag, kann eine eigene Idee als Ideeninsel einbringen."},
+ { stop:"Musik", ground:"wood", arts:[P("music","#FF6B4A"),P("sofa","#9B6BEF"),P("moon","#B79CF2"),P("lock","#9AA3B5")], place:"Die Aula", typ:"Persönlich betroffen", time:240, title:"Zu laut für Yara",
+   special:[{name:"Yara", mood:"frage", style:"scarf", skin:3, hair:0}],
+   text:"Yara freut sich auf das Fest. Aber laute Musik tut ihr in den Ohren weh, dann muss sie gehen. Was macht ihr?",
+   options:[
+    {t:"Laut wie immer", s:"Laut wie immer", sp:"out", d:"Ein Fest muss laut sein.", cost:0, zus:-4, warn:"Yara kann dann nicht dabei sein.", folge:"Die Musik dröhnt. Yara geht nach zehn Minuten nach Hause."},
+    {t:"Ein Ruheraum nebenan", s:"Ruheraum", sp:"in", d:"Ein Raum zum Ausruhen, mit Spielen.", cost:-10, zus:4, folge:"Im Ruheraum sitzen bald viele, nicht nur Yara."},
+    {t:"Leisere Musik für alle", s:"Leiser für alle", sp:"in", d:"Man kann sich auch unterhalten.", cost:0, zus:2, folge:"Die Musik ist leiser. Ein paar finden das langweilig, aber Yara bleibt."},
+    {t:"Yara bekommt Ohrenschützer", s:"Ohrenschützer", sp:"warn", d:"Dann muss sich nichts ändern.", cost:-15, zus:0, folge:"Yara trägt Ohrenschützer. Sie ist dabei, aber kann sich kaum unterhalten."}
+   ], fallback:1,
+   recht:{art:KRK(23), text:"Kinder, die etwas anders brauchen, sollen überall mitmachen können.", frage:"Kann Yara mit eurer Lösung richtig mitfeiern?"},
+   tipps:"Sprecht über Yara, nicht über echte Kinder. Fragt: Was brauchen andere, damit sie sich wohlfühlen?"},
+ { stop:"Essen", ground:"tiles", arts:[P("cake","#FF7FB0"),P("check","#4CC46B"),P("coins","#FFB23F"),P("lock","#9AA3B5")], place:"Die Aula", typ:"Mit Fakten", time:240, title:"Essen für alle",
+   text:"Alle bringen etwas zu essen mit. Was ist dabei wichtig?",
+   facts:["Mia hat eine Nussallergie. Schon wenig Nuss macht sie krank.","Aylin isst kein Schweinefleisch.","Drei Kinder essen kein Fleisch."],
+   options:[
+    {t:"Jeder bringt, was er will", s:"Jeder, was er will", d:"Wird schon passen.", cost:0, zus:-3, warn:"Mia könnte aus Versehen Nüsse essen und krank werden.", folge:"Auf dem Buffet liegen Nusskekse ohne Schild. Mia traut sich kaum, etwas zu essen."},
+    {t:"Ohne Nüsse und mit Schildern", s:"Mit Schildern", d:"Keine Nüsse, an jedem Teller steht, was drin ist.", cost:0, zus:5, folge:"An jedem Teller hängt ein Schild. Alle können sicher essen."},
+    {t:"Die Lehrkraft kauft ein", s:"Lehrkraft kauft", d:"Aus der Festkasse.", cost:-40, zus:2, folge:"Die Lehrkraft kauft passend ein. Sicher, aber teurer und weniger persönlich."},
+    {t:"Kein Essen", s:"Kein Essen", d:"Dann gibt es kein Problem.", cost:0, zus:-3, folge:"Es gibt nur Getränke. Nach einer Stunde haben alle Hunger."}
+   ], fallback:1,
+   recht:{art:KRK(24), text:"Jedes Kind hat das Recht auf Gesundheit. Und jeder darf nach seinem Glauben leben (Grundgesetz Artikel 4).", frage:"Können bei eurem Buffet alle sicher und gut essen?"},
+   tipps:"Neu ist: Die Fakten sollen in die Entscheidung. Fragt nach, ob Mia, Aylin und die Vegetarier in der Diskussion vorkamen."},
+ { stop:"Aufräumen", ground:"wood", arts:[P("star","#FFB23F"),P("calendar","#3E8EF7"),P("medal","#FF7FB0"),P("jar","#20C1B4")], place:"Die Aula, nach dem Fest", typ:"Fakten und Gerechtigkeit", time:180, title:"Wer räumt auf?",
+   text:"Beim letzten Fest haben fast nur Mädchen aufgeräumt. Die Jungs waren schon draußen beim Fußball. Wie macht ihr es diesmal?",
+   options:[
+    {t:"Wer will, hilft", s:"Freiwillig", d:"Niemand muss.", cost:0, zus:-3, warn:"Wahrscheinlich bleibt es wieder an denselben hängen.", folge:"Wieder räumen fast nur die Mädchen auf. Sie sind sauer."},
+    {t:"Ein Plan für alle", s:"Plan für alle", d:"Jedes Kind hat eine Aufgabe.", cost:0, zus:4, folge:"Jedes Kind hat eine Aufgabe. Nach 15 Minuten ist alles sauber."},
+    {t:"Wer am meisten Spaß hatte", s:"Wer am meisten feierte", d:"Die Lautesten räumen auf.", cost:0, zus:-1, folge:"Es gibt Streit, wer am meisten Spaß hatte."},
+    {t:"Auslosen", s:"Auslosen", d:"Sechs Kinder werden gelost.", cost:0, zus:1, folge:"Sechs Kinder werden gelost. Für sie dauert es eine Stunde."}
+   ], fallback:1,
+   recht:{art:"Grundgesetz, Artikel 3", text:"Jungen und Mädchen sind gleichberechtigt.", frage:"Sind die Aufgaben bei euch gerecht verteilt?"},
+   tipps:"Fragt: Wer macht bei euch zu Hause die Arbeit, die niemand sieht?"},
+ { stop:"Notfall", ground:"night", arts:[P("people","#20C1B4"),P("lock","#9AA3B5"),P("whistle","#FFB23F"),P("chat","#3E8EF7")], place:"Beim Spiel auf dem Fest", typ:"Notfall mit wenig Zeit", time:120, title:"„Du nicht!“",
+   special:[{name:"Ben", mood:"schlecht", style:"short", skin:5, hair:4, sit:true}],
+   text:"Beim Spiel wollen alle eine Gruppe bilden. Als Ben fragt, ob er mitmachen darf, sagen ein paar: „Du nicht!“. Ben setzt sich allein in eine Ecke. Ihr habt zwei Minuten.",
+   options:[
+    {t:"Jede Gruppe bestimmt selbst", s:"Gruppen bestimmen", sp:"out", d:"Wer mitspielt, ist Sache der Gruppe.", cost:0, zus:-6, warn:"Ben wird ausgeschlossen und ist allein.", folge:"Ben bleibt in der Ecke sitzen. Das Fest ist für ihn vorbei."},
+    {t:"Sofort neue, gemischte Gruppen", s:"Neue Gruppen", sp:"in", d:"Alle werden neu gemischt.", cost:0, zus:5, folge:"Die Gruppen werden neu gemischt. Ben ist in einem Team und gewinnt sogar."},
+    {t:"Lehrkraft holen", s:"Lehrkraft holen", sp:"in", d:"Eine Erwachsene klärt das.", cost:0, zus:3, folge:"Die Lehrkraft spricht mit allen. Ben spielt mit, aber die Stimmung ist angespannt."},
+    {t:"Mit Ben ein eigenes Spiel starten", s:"Eigenes Spiel", sp:"in", d:"Ein paar gehen zu Ben und spielen mit ihm.", cost:0, zus:4, folge:"Drei Kinder gehen zu Ben. Bald wollen auch andere mitspielen."}
+   ], fallback:2,
+   recht:{art:KRK(2), text:"Kein Kind darf ausgeschlossen oder benachteiligt werden.", frage:"Wie geht es Ben nach eurer Entscheidung?"},
+   tipps:"Wenig Zeit. Danach besprechen: Wer hat mutig gehandelt? Achtet darauf, dass sich niemand aus der echten Klasse angesprochen fühlt."}
+]}
+);
+
+/* ================= Oberstufe (ab Klasse 10): komplexere Fälle, Grundgesetz und Demokratieprinzipien ================= */
+SCENARIOS.push(
+/* ---------------- Abschlussball ---------------- */
+{ id:"ball", level:"ober", title:"Der große Ball", name:"Der Abschlussball",
+  teaser:"Location, Ticketpreise, Alkohol und Jugendschutz, Ehrungen und eine Bewertungsliste im Stufenchat.",
+  pitch:"Eure Stufe plant den Abschlussball. Ihr entscheidet über viel Geld, über Fairness bei den Tickets und darüber, wie ihr miteinander umgeht, wenn es ernst wird.",
+  money:{label:"Ballkasse", start:8000}, endTitle:"Euer Abschlussball", lastStop:"Ballnacht", homeBus:false,
+  heikel:"Station 2: Nicht alle können sich die Tickets leisten. Station 3: Alkohol und Jugendschutz. Station 5: Eine anonyme Liste bewertet das Aussehen von Mitschüler*innen.",
+  events:{0:{title:"Spende der Ehemaligen", text:"Der Ehemaligenverein unterstützt euch mit 500 €.", d:500},
+          2:{title:"Der DJ sagt ab", text:"Euer DJ ist krank. Der Ersatz kostet 400 € mehr.", d:-400}},
+  rounds:[
+ { stop:"Location", ground:"tiles", arts:[P("building","#3E8EF7"),P("sun","#FFB23F"),P("hammer","#FF6B4A"),P("cake","#FF7FB0")], place:"Stufenversammlung", typ:"Wünsche sammeln", time:240, title:"Wo wird gefeiert?",
+   text:"In der Ballkasse sind 8.000 € aus Kuchenverkäufen und Sponsoren. Wo feiert ihr?",
+   options:[
+    {t:"Stadthalle", s:"Stadthalle", d:"Groß, zentral, mit Technik. Klassisch, aber unpersönlich.", cost:-6000, zus:1, folge:"Die Stadthalle ist gebucht. Es wird elegant, für Extras bleibt wenig."},
+    {t:"Eventlocation am See", s:"Am See", d:"Traumhaft, aber weit draußen und teuer.", cost:-7500, zus:-1, warn:"Wer kein Auto hat, kommt schlecht hin und zurück.", folge:"Der See ist gebucht. Die Fotos werden toll, die Heimfahrt wird kompliziert."},
+    {t:"Turnhalle, selbst dekoriert", s:"Turnhalle", d:"Günstig. Viel Arbeit, viel Gemeinschaft.", cost:-1500, zus:4, folge:"Ihr dekoriert die Turnhalle selbst. Drei Wochenenden Arbeit, aber am Ende erkennt sie niemand wieder."},
+    {t:"Restaurant mit Menü", s:"Restaurant", d:"Essen inklusive, aber begrenzter Platz.", cost:-5000, zus:0, warn:"Nicht alle Familienangehörigen haben Platz.", folge:"Das Restaurant ist gebucht. Jede Person darf nur einen Gast mitbringen."}
+   ], fallback:0,
+   recht:{art:"Artikel 2 Grundgesetz", text:"Jede Person hat das Recht auf die freie Entfaltung ihrer Persönlichkeit, soweit sie nicht die Rechte anderer verletzt.", frage:"Wessen Wünsche haben sich durchgesetzt, und auf wessen Kosten?"},
+   tipps:"Zum Warmwerden. Achtet darauf, wer in der Stufe eigentlich entscheidet: die Orga-Gruppe oder alle?"},
+ { stop:"Tickets", ground:"tiles", arts:[P("coins","#FFB23F"),P("jar","#20C1B4"),P("megaphone","#FF6B4A"),P("arrows","#3E8EF7")], place:"Orga-Treffen", typ:"Persönlich betroffen", time:240, title:"Was kostet ein Ticket?",
+   special:[{name:"Jamal", mood:"frage", style:"short", skin:5, hair:0}],
+   text:"Für den Rest der Kosten braucht ihr Ticketgeld. Bei 60 € pro Person würde es reichen. Jamal sagt in der Gruppe offen: Für ihn und seine Mutter wären 120 € nicht drin.",
+   options:[
+    {t:"Einheitspreis 60 €", s:"Einheitspreis", sp:"out", d:"Für alle gleich, einfach und transparent.", cost:0, zus:-4, warn:"Gleich ist nicht immer gerecht, wenn die Voraussetzungen ungleich sind.", folge:"Der Preis steht. Jamal kommt allein, ohne seine Mutter."},
+    {t:"Solidarpreis: 40, 60 oder 80 €", s:"Solidarpreis", sp:"in", d:"Jede Person wählt selbst, was sie zahlen kann. Niemand wird kontrolliert.", cost:200, zus:4, folge:"Viele zahlen 80 €. Am Ende bleibt sogar Geld übrig, und niemand musste sich erklären."},
+    {t:"Sponsoren suchen", s:"Sponsoren", sp:"in", d:"Lokale Firmen bekommen eine Anzeige im Ballheft.", cost:600, zus:2, folge:"Fünf Firmen geben Geld. Der Ticketpreis sinkt auf 45 €."},
+    {t:"Billiger feiern", s:"Billiger feiern", sp:"in", d:"Weniger Deko, kein Fotograf, Ticket 30 €.", cost:-200, zus:1, folge:"Der Ball wird schlichter. Manche murren, aber alle können kommen."}
+   ], fallback:1,
+   recht:{art:"Artikel 3 Grundgesetz", text:"Alle Menschen sind vor dem Gesetz gleich (Art. 3).", frage:"Was ist gerechter: alle gleich zu behandeln oder nach ihren Möglichkeiten?"},
+   tipps:"Guter Moment für den Unterschied zwischen Gleichheit und Gerechtigkeit. Niemand aus der echten Stufe sollte seine finanzielle Lage offenlegen müssen."},
+ { stop:"Alkohol", ground:"night", arts:[P("lock","#9AA3B5"),P("check","#4CC46B"),P("drop","#3E8EF7"),P("shield","#FF4D6D")], place:"Orga-Treffen", typ:"Mit Fakten", time:240, title:"Und was wird getrunken?",
+   text:"Die Location fragt, wie ihr es mit Alkohol haltet.",
+   facts:["Einige in eurer Stufe sind 17, die meisten 18.","Jugendschutzgesetz: Bier, Wein und Sekt ab 16, Spirituosen ab 18.","Als Veranstalter seid ihr mitverantwortlich."],
+   options:[
+    {t:"Kein Alkohol", s:"Kein Alkohol", d:"Alkoholfreier Ball, dafür eine gute Cocktailbar.", cost:-300, zus:1, folge:"Der Ball ist alkoholfrei. Einige trinken vorher draußen, die meisten finden die Cocktails gut."},
+    {t:"Nach Gesetz, mit Bändchen", s:"Mit Bändchen", d:"Ab 16 Bier, Wein, Sekt, ab 18 alles. Bändchen am Eingang.", cost:-200, zus:3, folge:"Am Eingang gibt es Bändchen. Die Bar achtet darauf, und der Abend bleibt entspannt."},
+    {t:"Freie Bar für alle", s:"Freie Bar", d:"Wer will, trinkt, was er will.", cost:-800, zus:-4, warn:"Das verstößt gegen das Jugendschutzgesetz. Ihr haftet, wenn etwas passiert.", folge:"Um Mitternacht muss ein Krankenwagen kommen. Die Location will euch nicht mehr."},
+    {t:"Caterer mit Ausweiskontrolle", s:"Caterer prüft", d:"Ein Profi-Team übernimmt die Bar und kontrolliert.", cost:-600, zus:2, folge:"Der Caterer kontrolliert streng. Sicher, aber teuer."}
+   ], fallback:1,
+   recht:{art:"Artikel 2 Grundgesetz", text:"Jede Person hat das Recht auf Leben und körperliche Unversehrtheit (Art. 2). Der Staat schützt junge Menschen besonders, zum Beispiel durch das Jugendschutzgesetz.", frage:"Wo endet eure Freiheit, und wo beginnt eure Verantwortung für andere?"},
+   tipps:"Neu ist: Die Fakten müssen in die Entscheidung. Moralisiert nicht, sondern fragt nach Verantwortung als Veranstalter."},
+ { stop:"Ehrungen", ground:"tiles", arts:[P("medal","#FFB23F"),P("heart","#FF4D6D"),P("star","#9B6BEF"),P("eyeoff","#9AA3B5")], place:"Programmplanung", typ:"Fakten und Gerechtigkeit", time:180, title:"Wer wird geehrt?",
+   text:"Traditionell werden beim Ball die drei besten Abschlüsse geehrt. Einige finden das unfair gegenüber allen, die sich anders eingebracht haben.",
+   options:[
+    {t:"Die besten Noten ehren", s:"Beste Noten", d:"Leistung soll sich lohnen.", cost:0, zus:-2, warn:"Wer viel für die Gemeinschaft getan hat, aber schwächere Noten hat, bleibt unsichtbar.", folge:"Drei Personen stehen auf der Bühne. Viele klatschen höflich."},
+    {t:"Persönliche Würdigung für alle", s:"Alle würdigen", d:"Jede Person bekommt einen Satz von der Stufe.", cost:-100, zus:5, folge:"Für jede Person wird ein Satz vorgelesen. Es dauert lange, aber es wird der emotionalste Teil des Abends."},
+    {t:"Publikumspreise per Abstimmung", s:"Publikumspreise", d:"Die Stufe wählt Kategorien wie „Hilfsbereiteste Person“.", cost:0, zus:2, warn:"Beliebtheitswahlen können Außenseiter verletzen.", folge:"Die Preise sind lustig, aber manche merken, dass sie nie genannt werden."},
+    {t:"Keine Ehrungen", s:"Keine Ehrungen", d:"Alle feiern gemeinsam, ohne Bühne.", cost:0, zus:1, folge:"Es gibt keine Ehrungen. Manche vermissen es, andere sind erleichtert."}
+   ], fallback:1,
+   recht:{art:"Artikel 3 Grundgesetz", text:"Alle Menschen sind vor dem Gesetz gleich (Art. 3).", frage:"Was soll eine Gemeinschaft auszeichnen: Leistung, Einsatz oder beides?"},
+   tipps:"Keine eindeutig richtige Lösung. Gut für eine Diskussion über Leistungsgerechtigkeit."},
+ { stop:"Notfall", ground:"night", arts:[P("eyeoff","#FF4D6D"),P("flag","#20C1B4"),P("chat","#3E8EF7"),P("people","#FFB23F")], place:"Stufenchat, Abend vor dem Ball", typ:"Notfall mit wenig Zeit", time:120, title:"Eine Bewertungsliste",
+   special:[{name:"Lena", mood:"schlecht", style:"long", skin:1, hair:6, sit:true}],
+   text:"Im Stufenchat taucht eine anonyme Liste auf, die das Aussehen von Mitschüler*innen mit Punkten bewertet. Lena steht ganz unten. Sie schreibt, dass sie nicht zum Ball kommt. Ihr habt zwei Minuten, bevor die Liste weiter geteilt wird.",
+   options:[
+    {t:"Ignorieren", s:"Ignorieren", sp:"out", d:"Nicht reagieren, dann geht es vorbei.", cost:0, zus:-6, warn:"Schweigen wirkt wie Zustimmung. Lena bleibt allein.", folge:"Die Liste wird weiter geteilt. Lena kommt nicht zum Ball."},
+    {t:"Melden, löschen lassen, Lena beistehen", s:"Melden und beistehen", sp:"in", d:"Admins und Vertrauenslehrkraft einschalten, Lena direkt schreiben.", cost:0, zus:7, folge:"Die Liste ist nach zehn Minuten weg. Fünf Leute schreiben Lena. Sie kommt doch zum Ball."},
+    {t:"Mit einer Gegenliste zurückschlagen", s:"Gegenliste", sp:"warn", d:"Die vermuteten Urheber selbst bewerten.", cost:0, zus:-5, warn:"Neue Bloßstellung macht die alte nicht ungeschehen.", folge:"Der Chat eskaliert. Am nächsten Tag redet die halbe Stufe nicht mehr miteinander."},
+    {t:"Klare Ansage im Chat", s:"Ansage im Chat", sp:"in", d:"Die Stufensprecher schreiben: Das ist nicht okay, löscht es.", cost:0, zus:4, folge:"Viele stimmen den Stufensprechern zu. Die Liste wird gelöscht, aber Lena erfährt erst spät davon."}
+   ], fallback:1,
+   recht:{art:"Artikel 1 und 2 Grundgesetz", text:"Die Würde des Menschen ist unantastbar (Art. 1). Das Persönlichkeitsrecht schützt davor, öffentlich herabgewürdigt zu werden (Art. 2).", frage:"Was schuldet eine Gemeinschaft denen, die angegriffen werden?"},
+   tipps:"Wenig Zeit. Danach in Ruhe sprechen. Achtet darauf, dass niemand aus der echten Stufe gemeint ist, und bietet Ansprechpersonen an."}
+]},
+
+/* ---------------- Schülerhaushalt ---------------- */
+{ id:"haushalt", level:"ober", title:"Euer Budget", name:"Der Schülerhaushalt",
+  teaser:"Projektauswahl, Stimmrecht für Jüngere, Wahlkampf mit falschen Zahlen, knappe Mehrheit und Wahlbetrug.",
+  pitch:"Die Schule gibt euch 5.000 €, und die Schülerschaft entscheidet, wofür. Ihr erlebt, wie ein Haushalt demokratisch entsteht und wo Wahlen verwundbar sind.",
+  money:{label:"Haushalt", start:5000}, endTitle:"Euer Schülerhaushalt", lastStop:"Umsetzung", homeBus:false,
+  heikel:"Station 3: Bewusst falsche Zahlen im Wahlkampf. Station 5: Verdacht auf Wahlbetrug gegen bestimmte Personen.",
+  events:{0:{title:"Die Stadt legt drauf", text:"Die Stadt findet das Projekt gut und gibt 500 € dazu.", d:500},
+          2:{title:"Gestiegene Preise", text:"Handwerker sind teurer geworden. Euch fehlen 400 €.", d:-400}},
+  rounds:[
+ { stop:"Projekte", ground:"tiles", arts:[P("wifi","#3E8EF7"),P("drop","#20C1B4"),P("book","#4CC46B"),P("bike","#FF6B4A")], place:"Schülerrat", typ:"Wünsche sammeln", time:240, title:"Welche Projekte stehen zur Wahl?",
+   text:"Aus über 40 Vorschlägen soll der Schülerrat ein erstes Projekt auswählen. 5.000 € stehen bereit.",
+   options:[
+    {t:"WLAN in allen Räumen", s:"WLAN", d:"Lernen mit Tablets für alle. Teuer.", cost:-3000, zus:1, folge:"Das WLAN wird ausgebaut. Endlich funktionieren die Tablets überall."},
+    {t:"Wasserspender", s:"Wasserspender", d:"Gesund, nachhaltig, für alle nützlich.", cost:-1500, zus:3, folge:"Zwei Wasserspender kommen. Die Plastikflaschen werden weniger."},
+    {t:"Ruhiger Lernraum", s:"Lernraum", d:"Ein Raum für Freistunden und Lerngruppen.", cost:-2500, zus:2, folge:"Der Lernraum entsteht. In der Abiphase ist er immer voll."},
+    {t:"Überdachte Fahrradständer", s:"Fahrradständer", d:"Fürs Klima und für trockene Sättel.", cost:-2000, zus:1, folge:"Die Fahrradständer werden überdacht. Mehr Leute kommen mit dem Rad."}
+   ], fallback:1,
+   recht:{art:"Artikel 20 Grundgesetz", text:"Alle Staatsgewalt geht vom Volke aus (Art. 20).", frage:"Wer hat hier eigentlich entschieden: die ganze Schülerschaft oder ein kleiner Kreis?"},
+   tipps:"Zum Warmwerden. Wer mag, bringt einen eigenen Vorschlag als Ideeninsel ein."},
+ { stop:"Stimmrecht", ground:"tiles", arts:[P("crown","#FFB23F"),P("people","#4CC46B"),P("flag","#3E8EF7"),P("arrows","#9B6BEF")], place:"Schülerrat", typ:"Persönlich betroffen", time:240, title:"Wer darf abstimmen?",
+   special:[{name:"Kemal", mood:"frage", style:"cap", skin:3, hair:4}],
+   text:"Über das Geld soll die Schülerschaft abstimmen. Kemal aus der Oberstufe meint: Die Fünftklässler verstehen das doch gar nicht. Eine Fünftklässlerin hält dagegen: Es ist auch unsere Schule.",
+   options:[
+    {t:"Nur die Oberstufe stimmt ab", s:"Nur Oberstufe", sp:"warn", d:"Die Älteren haben mehr Überblick.", cost:0, zus:-4, warn:"Ein Großteil der Schülerschaft wird von der Entscheidung ausgeschlossen.", folge:"Nur die Oberstufe stimmt ab. Die Jüngeren fühlen sich übergangen und boykottieren das Projekt."},
+    {t:"Alle, eine Person eine Stimme", s:"Alle gleich", sp:"in", d:"Jede Schülerin und jeder Schüler hat eine Stimme.", cost:0, zus:4, folge:"Alle stimmen ab. Die Jüngeren sind in der Mehrheit, und ihr Projekt gewinnt."},
+    {t:"Gewählte Delegierte pro Klasse", s:"Delegierte", sp:"in", d:"Jede Klasse wählt zwei Vertreter*innen.", cost:0, zus:2, folge:"Die Delegierten beraten lange. Das Ergebnis ist durchdacht, aber manche wissen nicht, was ihre Delegierten wollten."},
+    {t:"Stimmen nach Alter gewichten", s:"Gewichtet", sp:"out", d:"Ältere zählen mehr.", cost:0, zus:-6, warn:"Ungleiche Stimmen widersprechen dem Grundsatz der gleichen Wahl.", folge:"Die Gewichtung führt zu Protest. Es gibt eine Gegenpetition."}
+   ], fallback:2,
+   recht:{art:"Artikel 38 Grundgesetz", text:"Wahlen sind allgemein, unmittelbar, frei, gleich und geheim (Art. 38).", frage:"Welcher dieser Grundsätze gilt in eurer Regel, welcher nicht?"},
+   tipps:"Guter Moment für die Wahlrechtsgrundsätze und die Debatte über das Wahlalter."},
+ { stop:"Wahlkampf", ground:"asphalt", arts:[P("megaphone","#FF6B4A"),P("pin","#FFB23F"),P("check","#4CC46B"),P("lock","#9AA3B5")], place:"Pausenhalle", typ:"Mit Fakten", time:240, title:"Wahlkampf mit falschen Zahlen",
+   text:"Vor der Abstimmung werben die Teams. Eines übertreibt.",
+   facts:["Das WLAN-Team postet: „Mit WLAN steigen die Noten um eine ganze Stufe.“","Eine Quelle dafür gibt es nicht.","Ein anderes Team verteilt Süßigkeiten mit Aufkleber."],
+   options:[
+    {t:"Alles erlaubt", s:"Alles erlaubt", d:"Meinungsfreiheit gilt für alle.", cost:0, zus:-3, warn:"Wer täuscht, nimmt anderen die Chance, frei zu entscheiden.", folge:"Die übertriebene Kampagne gewinnt. Danach fühlen sich viele getäuscht."},
+    {t:"Regeln für faire Werbung", s:"Faire Regeln", d:"Quellen nennen, keine Geschenke.", cost:0, zus:4, folge:"Alle Teams unterschreiben Regeln. Die Debatte wird sachlicher."},
+    {t:"Faktencheck der Schülerzeitung", s:"Faktencheck", d:"Die Schülerzeitung prüft alle Aussagen.", cost:-100, zus:3, folge:"Die Schülerzeitung prüft alle Aussagen. Das WLAN-Team korrigiert sich."},
+    {t:"Werbung ganz verbieten", s:"Werbeverbot", d:"Nur ein neutraler Steckbrief pro Projekt.", cost:0, zus:0, warn:"Auch Werbung ist Meinungsäußerung. Ein Totalverbot schränkt sie stark ein.", folge:"Es gibt nur Steckbriefe. Fair, aber kaum jemand liest sie."}
+   ], fallback:2,
+   recht:{art:"Artikel 5 Grundgesetz", text:"Jede Person darf ihre Meinung frei äußern (Art. 5). Bewusst falsche Tatsachenbehauptungen sind davon nicht geschützt.", frage:"Wo endet Meinung, und wo beginnt Täuschung?"},
+   tipps:"Neu ist: Die Fakten müssen in die Entscheidung. Gut für den Unterschied zwischen Meinung und Tatsachenbehauptung."},
+ { stop:"Ergebnis", ground:"tiles", arts:[P("crown","#FFB23F"),P("recycle","#4CC46B"),P("arrows","#3E8EF7"),P("building","#9AA3B5")], place:"Auszählung", typ:"Fakten und Gerechtigkeit", time:180, title:"51 zu 49",
+   text:"Für das zweite Projekt ist das Ergebnis knapp: 51 Prozent für den Lernraum, 49 Prozent für den Wasserspender. Was passiert mit dem restlichen Geld?",
+   options:[
+    {t:"Gewinner bekommt alles", s:"Gewinner alles", d:"Mehrheit ist Mehrheit.", cost:-1500, zus:-2, warn:"Fast die Hälfte geht leer aus.", folge:"Der Lernraum wird gebaut. Fast die Hälfte der Schule fühlt sich nicht vertreten."},
+    {t:"Nach Stimmen aufteilen", s:"Aufteilen", d:"Beide Projekte bekommen Geld, beide etwas kleiner.", cost:-1700, zus:3, folge:"Beide Projekte werden umgesetzt, etwas kleiner. Fast alle sind zufrieden."},
+    {t:"Stichwahl mit mehr Information", s:"Stichwahl", d:"Noch eine Woche Debatte, dann neu abstimmen.", cost:-1500, zus:2, folge:"Nach der Debatte gewinnt der Lernraum mit 58 Prozent. Das Ergebnis wird besser akzeptiert."},
+    {t:"Die Schulleitung entscheidet", s:"Schulleitung", d:"Bei knappen Ergebnissen entscheiden Erwachsene.", cost:-1000, zus:-5, warn:"Damit wird die Abstimmung entwertet.", folge:"Die Schulleitung wählt den Wasserspender. Viele fragen sich, warum sie überhaupt abgestimmt haben."}
+   ], fallback:1,
+   recht:{art:"Artikel 20 Grundgesetz", text:"Alle Staatsgewalt geht vom Volke aus. Sie wird in Wahlen und Abstimmungen ausgeübt (Art. 20).", frage:"Was schuldet eine knappe Mehrheit der knappen Minderheit?"},
+   tipps:"Keine eindeutig richtige Lösung. Gut für die Frage nach Minderheitenschutz in der Demokratie."},
+ { stop:"Notfall", ground:"night", arts:[P("eye","#FF4D6D"),P("recycle","#20C1B4"),P("megaphone","#FF6B4A"),P("clock","#3E8EF7")], place:"Kurz vor der Verkündung", typ:"Notfall mit wenig Zeit", time:120, title:"Verdacht auf Wahlbetrug",
+   special:[{name:"Tara", mood:"frage", style:"bun", skin:2, hair:5}],
+   text:"Fünf Minuten vor der Verkündung entdeckt Tara aus dem Wahlteam: Über 60 Stimmen kamen von denselben Geräten. Einige verdächtigen sofort zwei Mitglieder eines Projektteams. Ihr habt zwei Minuten.",
+   options:[
+    {t:"Ergebnis trotzdem verkünden", s:"Trotzdem verkünden", sp:"out", d:"Alles andere bringt nur Ärger.", cost:0, zus:-6, warn:"Eine Wahl mit Verdacht auf Manipulation ist nicht mehr frei und gleich.", folge:"Das Ergebnis wird verkündet. Zwei Tage später kommt der Betrug heraus, und niemand vertraut dem Schülerrat mehr."},
+    {t:"Verkündung verschieben und prüfen", s:"Prüfen", sp:"in", d:"Erst Fakten klären, dann entscheiden.", cost:0, zus:5, folge:"Die Verkündung wird verschoben. Die Prüfung zeigt: Es war ein Fehler im Abstimmungstool, kein Betrug."},
+    {t:"Die Verdächtigen öffentlich nennen", s:"Namen nennen", sp:"out", d:"Alle sollen wissen, wer betrogen hat.", cost:0, zus:-7, warn:"Ein Verdacht ist kein Beweis. Öffentliche Vorverurteilung verletzt die Würde.", folge:"Die beiden werden angefeindet. Später stellt sich heraus: Sie hatten nichts damit zu tun."},
+    {t:"Die Abstimmung komplett wiederholen", s:"Wiederholen", sp:"in", d:"Neue Wahl mit sicherem Verfahren.", cost:-100, zus:3, folge:"Die Wahl wird wiederholt. Es kostet Zeit, aber das Ergebnis ist unangreifbar."}
+   ], fallback:1,
+   recht:{art:"Artikel 38 und 1 Grundgesetz", text:"Wahlen müssen frei und gleich sein (Art. 38). Und niemand darf ohne Beweis öffentlich bloßgestellt werden (Art. 1).", frage:"Wie schützt ihr die Wahl und gleichzeitig die Verdächtigten?"},
+   tipps:"Wenig Zeit. Danach besprechen: Warum sind Verfahren in der Demokratie so wichtig, auch wenn sie Zeit kosten?"}
+]},
+
+/* ---------------- Protest ---------------- */
+{ id:"protest", level:"ober", title:"Der Bus fällt weg", name:"Der Protest",
+  teaser:"Protestform, Schulpflicht, Anmeldung einer Demo, Parteifahnen und Gegendemonstranten.",
+  pitch:"Der Landkreis will die Buslinie zu eurer Schule streichen. Ihr entscheidet, wie ihr euch wehrt und wie weit euer Protest gehen darf.",
+  money:{label:"Aktionskasse", start:300}, endTitle:"Euer Protest", lastStop:"Kreistag", homeBus:false,
+  heikel:"Station 2: Schulpflicht und unentschuldigtes Fehlen. Station 4: Parteien und politische Neutralität. Station 5: Gegendemonstranten und eine Rangelei.",
+  events:{0:{title:"Die Zeitung berichtet", text:"Die Lokalzeitung schreibt über euch. Leser spenden 100 €.", d:100},
+          2:{title:"Teure Plakate", text:"Der Druck der Plakate kostet 50 € mehr.", d:-50}},
+  rounds:[
+ { stop:"Protestform", ground:"asphalt", arts:[P("megaphone","#FF6B4A"),P("book","#3E8EF7"),P("chat","#20C1B4"),P("phone","#9B6BEF")], place:"Bushaltestelle vor der Schule", typ:"Wünsche sammeln", time:240, title:"Wie wehrt ihr euch?",
+   text:"Ab dem nächsten Schuljahr soll die Linie 17 nicht mehr fahren. Für viele aus den Dörfern ist sie der einzige Weg zur Schule. Wie reagiert ihr?",
+   options:[
+    {t:"Demo vor dem Landratsamt", s:"Demo", d:"Laut und sichtbar.", cost:-80, zus:2, folge:"Ihr plant eine Demo. Die Aufregung ist groß."},
+    {t:"Petition mit Unterschriften", s:"Petition", d:"Unterschriften sammeln und übergeben.", cost:-20, zus:2, folge:"In zwei Wochen sammelt ihr 1.200 Unterschriften."},
+    {t:"Gespräch mit dem Landrat", s:"Gespräch", d:"Termin anfragen und gut vorbereiten.", cost:0, zus:1, folge:"Der Landrat gibt euch 15 Minuten. Er hört zu, verspricht aber nichts."},
+    {t:"Social-Media-Kampagne", s:"Kampagne", d:"Videos von Betroffenen, ein eigener Hashtag.", cost:-50, zus:1, warn:"Wer zeigt sich mit Gesicht? Nicht alle wollen online sichtbar sein.", folge:"Die Videos werden tausendfach geteilt. Unter manchen stehen auch hässliche Kommentare."}
+   ], fallback:2,
+   recht:{art:"Artikel 17 Grundgesetz", text:"Jede Person hat das Recht, sich mit Bitten oder Beschwerden an die zuständigen Stellen und an die Volksvertretung zu wenden (Art. 17).", frage:"Welche Form erreicht die, die entscheiden, wirklich?"},
+   tipps:"Zum Warmwerden. Fragt: Welche Protestformen kennt ihr, und was bewirken sie?"},
+ { stop:"Schulzeit", ground:"asphalt", arts:[P("clock","#FF6B4A"),P("sun","#FFB23F"),P("building","#3E8EF7"),P("bolt","#9AA3B5")], place:"Klassenzimmer", typ:"Persönlich betroffen", time:240, title:"Demo während der Schulzeit?",
+   special:[{name:"Hanna", mood:"frage", style:"braids", skin:1, hair:3}],
+   text:"Die Demo soll Freitagvormittag sein, dann kommt die Presse. Hanna aus dem Dorf braucht den Bus am meisten, aber ihre Eltern erlauben kein unentschuldigtes Fehlen.",
+   facts:["Die Schulpflicht gilt auch an Demo-Tagen. Wer ohne Erlaubnis fehlt, fehlt unentschuldigt."],
+   options:[
+    {t:"Demo in der Schulzeit, egal was passiert", s:"In der Schulzeit", sp:"out", d:"Ziviler Ungehorsam erzeugt Aufmerksamkeit.", cost:0, zus:-2, warn:"Wer teilnimmt, riskiert Fehlzeiten. Hanna kann nicht mit.", folge:"Die Demo ist voll, aber Hanna, die Betroffenste, sitzt im Unterricht."},
+    {t:"Nach Schulschluss", s:"Nach der Schule", sp:"in", d:"Weniger Presse, aber alle können kommen.", cost:0, zus:3, folge:"Die Demo ist am Nachmittag. Hanna hält eine Rede."},
+    {t:"Als Schulveranstaltung mit der Schulleitung", s:"Mit der Schule", sp:"in", d:"Als Exkursion zum Thema Demokratie.", cost:0, zus:4, folge:"Die Schulleitung stimmt zu. Ihr seid in der Schulzeit dort, ganz legal."},
+    {t:"Jeder entscheidet selbst", s:"Jeder selbst", sp:"warn", d:"Keine gemeinsame Linie.", cost:0, zus:0, folge:"Die Hälfte geht, die Hälfte bleibt. Die Stufe streitet sich."}
+   ], fallback:2,
+   recht:{art:"Artikel 8 Grundgesetz", text:"Alle Deutschen haben das Recht, sich friedlich und ohne Waffen zu versammeln (Art. 8). Wer keinen deutschen Pass hat, ist über Art. 2 geschützt. Die Schulpflicht gilt trotzdem.", frage:"Was wiegt schwerer: euer Protestrecht oder die Schulpflicht? Und für wen?"},
+   tipps:"Kein Freibrief und kein Verbot. Arbeitet heraus, dass Grundrechte miteinander in Konflikt geraten können."},
+ { stop:"Anmeldung", ground:"asphalt", arts:[P("check","#4CC46B"),P("bolt","#FF6B4A"),P("phone","#9B6BEF"),P("shield","#3E8EF7")], place:"Orga-Treffen", typ:"Mit Fakten", time:240, title:"Muss die Demo angemeldet werden?",
+   text:"Ihr wollt am Freitag vor dem Landratsamt stehen. Was gilt?",
+   facts:["Demos unter freiem Himmel müssen meist 48 Stunden vorher angemeldet werden.","Die Polizei schützt angemeldete Versammlungen.","Spontan ohne Anmeldung gibt es Ärger, wenn Anmelden möglich gewesen wäre."],
+   options:[
+    {t:"Rechtzeitig anmelden", s:"Anmelden", d:"Mit Versammlungsleitung, Ordnern und Route.", cost:-20, zus:3, folge:"Die Demo ist angemeldet. Die Polizei sperrt eine Spur für euch."},
+    {t:"Spontan, ohne Anmeldung", s:"Spontan", d:"Anmelden ist Bürokratie.", cost:0, zus:-3, warn:"Ihr hättet anmelden können. Die Versammlung kann aufgelöst werden.", folge:"Die Polizei löst die Versammlung nach zwanzig Minuten auf."},
+    {t:"Nur online protestieren", s:"Nur online", d:"Keine Anmeldung nötig.", cost:0, zus:0, folge:"Online gibt es viele Likes, aber im Landratsamt merkt man wenig davon."},
+    {t:"Eine Lehrkraft hilft bei der Anmeldung", s:"Mit Lehrkraft", d:"Gemeinsam das Formular ausfüllen.", cost:-20, zus:4, folge:"Ihr lernt, wie eine Anmeldung funktioniert. Die Demo läuft reibungslos."}
+   ], fallback:0,
+   recht:{art:"Artikel 8 Grundgesetz", text:"Für Versammlungen unter freiem Himmel kann das Versammlungsrecht durch Gesetz beschränkt werden, zum Beispiel durch die Anmeldepflicht (Art. 8 Abs. 2).", frage:"Warum gibt es Regeln für ein Grundrecht?"},
+   tipps:"Neu ist: Die Fakten müssen in die Entscheidung. Hinweis: Die genauen Regeln stehen im Versammlungsgesetz eures Bundeslandes."},
+ { stop:"Parteien", ground:"asphalt", arts:[P("flag","#FF6B4A"),P("people","#4CC46B"),P("check","#3E8EF7"),P("lock","#9AA3B5")], place:"Orga-Treffen", typ:"Fakten und Gerechtigkeit", time:180, title:"Parteifahnen auf der Demo?",
+   text:"Mehrere Parteien wollen die Demo unterstützen, mit Fahnen und eigenen Reden. Einige im Orga-Team freuen sich über die Aufmerksamkeit, andere fürchten, vereinnahmt zu werden.",
+   options:[
+    {t:"Alle Parteien willkommen, mit Fahnen", s:"Alle mit Fahnen", d:"Je mehr, desto lauter.", cost:0, zus:-2, warn:"Euer Anliegen kann hinter Parteipolitik verschwinden.", folge:"Die Fahnen dominieren die Fotos. In der Zeitung geht es mehr um Parteien als um den Bus."},
+    {t:"Alle Menschen willkommen, keine Parteisymbole", s:"Ohne Parteisymbole", d:"Wer will, kommt als Bürgerin oder Bürger.", cost:0, zus:4, folge:"Politiker verschiedener Parteien laufen mit, aber ohne Fahnen. Es bleibt eure Demo."},
+    {t:"Reden nur von Betroffenen", s:"Nur Betroffene", d:"Parteien dürfen kommen, aber nicht reden.", cost:0, zus:3, folge:"Nur Schülerinnen, Schüler und Eltern sprechen. Die Botschaft ist klar."},
+    {t:"Ohne jede Partei, sonst absagen", s:"Ohne Parteien", d:"Lieber keine Demo als eine politische.", cost:0, zus:-1, folge:"Ihr lehnt alle ab. Einige Parteimitglieder sind gekränkt, die Demo ist kleiner."}
+   ], fallback:1,
+   recht:{art:"Artikel 21 Grundgesetz", text:"Die Parteien wirken bei der politischen Willensbildung des Volkes mit (Art. 21).", frage:"Wie bleibt ein Anliegen überparteilich, ohne Parteien auszuschließen?"},
+   tipps:"Bleibt selbst parteipolitisch neutral. Es geht um die Frage, wie Bürgerprotest und Parteien zusammenspielen."},
+ { stop:"Notfall", ground:"night", arts:[P("shield","#3E8EF7"),P("bolt","#FF4D6D"),P("camera","#20C1B4"),P("flag","#FFB23F")], place:"Vor dem Landratsamt", typ:"Notfall mit wenig Zeit", time:120, title:"Die Stimmung kippt",
+   special:[{name:"Malte", mood:"schlecht", style:"curly", skin:0, hair:2, sit:true}],
+   text:"Ein paar Gegendemonstranten pöbeln. Malte aus eurer Stufe wird geschubst und fällt. Einige wollen zurückschubsen. Ihr habt zwei Minuten.",
+   options:[
+    {t:"Zurückschubsen", s:"Zurückschubsen", sp:"out", d:"Wir lassen uns das nicht gefallen.", cost:0, zus:-7, warn:"Eine Versammlung ist nur geschützt, solange sie friedlich ist.", folge:"Es kommt zu einer Rangelei. Die Polizei beendet die Demo, und die Zeitung schreibt über Gewalt statt über den Bus."},
+    {t:"Ordner und Polizei ansprechen, Abstand halten", s:"Polizei holen", sp:"in", d:"Ruhig bleiben, Hilfe holen, Malte versorgen.", cost:0, zus:6, folge:"Die Polizei trennt die Gruppen. Malte ist nur leicht verletzt, die Demo geht weiter."},
+    {t:"Demo sofort beenden", s:"Abbrechen", sp:"warn", d:"Sicherheit geht vor.", cost:0, zus:0, folge:"Ihr brecht ab. Alle sind sicher, aber die Gegendemonstranten fühlen sich bestätigt."},
+    {t:"Alles filmen und sofort online stellen", s:"Filmen", sp:"warn", d:"Beweise sichern und öffentlich machen.", cost:0, zus:-2, warn:"Beweise sichern ist sinnvoll. Unverpixelt online stellen kann Persönlichkeitsrechte verletzen.", folge:"Das Video geht viral. Die Debatte dreht sich bald nur noch um das Video."}
+   ], fallback:1,
+   recht:{art:"Artikel 8 und 2 Grundgesetz", text:"Geschützt ist, wer sich friedlich und ohne Waffen versammelt (Art. 8). Jede Person hat das Recht auf körperliche Unversehrtheit (Art. 2).", frage:"Warum ist Friedlichkeit die Bedingung für das Versammlungsrecht?"},
+   tipps:"Wenig Zeit. Danach besprechen: Wie reagiert man auf Provokation, ohne sein Anliegen zu beschädigen?"}
+]},
+
+/* ---------------- Handyregel der Schule ---------------- */
+{ id:"handy", level:"ober", title:"Handy aus?", name:"Die Schulkonferenz",
+  teaser:"Handyregel, Ausnahmen, Umfragedaten, Kontrolle durch Lehrkräfte und ein Deepfake-Video.",
+  pitch:"Die Schulkonferenz will eine neue Handyregel, und ihr sitzt mit am Tisch. Es geht um Freiheit, Schutz, Privatsphäre und darum, was Fälschungen anrichten können.",
+  money:{label:"SMV-Budget", start:1500}, endTitle:"Eure Handyregel", lastStop:"Neue Regel", homeBus:false,
+  heikel:"Station 2: Eine Schülerin pflegt ihre kranke Mutter. Station 4: Durchsuchung von Handys. Station 5: Ein gefälschtes Video zeigt eine Lehrkraft mit rassistischen Aussagen.",
+  events:{0:{title:"Förderung vom Land", text:"Ein Landesprogramm für Medienbildung gibt euch 300 €.", d:300},
+          2:{title:"Spinde kaputt", text:"Die Schlösser der Handyspinde müssen ersetzt werden. Das kostet 200 €.", d:-200}},
+  rounds:[
+ { stop:"Regel", ground:"tiles", arts:[P("lock","#9AA3B5"),P("pin","#FF6B4A"),P("clock","#3E8EF7"),P("book","#4CC46B")], place:"Schulkonferenz", typ:"Wünsche sammeln", time:240, title:"Welche Handyregel soll gelten?",
+   text:"Die Schulkonferenz aus Lehrkräften, Eltern und Schülervertretung will eine neue Regel. Ihr dürft einen Vorschlag einbringen.",
+   options:[
+    {t:"Komplettes Handyverbot", s:"Komplettverbot", d:"Handys bleiben im Spind, von 8 bis 16 Uhr.", cost:-800, zus:-2, warn:"Ein Komplettverbot trifft auch die, die das Handy verantwortungsvoll nutzen.", folge:"Die Handyspinde werden gekauft. In den Pausen wird wieder mehr geredet, aber auch gemurrt."},
+    {t:"Handyfreie Zonen", s:"Freie Zonen", d:"Mensa und Bibliothek ohne Handy, sonst erlaubt.", cost:-100, zus:2, folge:"Schilder markieren die Zonen. In der Mensa wird wieder gemeinsam gegessen."},
+    {t:"Nur in den Pausen", s:"Nur Pausen", d:"Im Unterricht aus, in Pausen frei.", cost:0, zus:1, folge:"Die Regel ist einfach. In den Pausen starren trotzdem viele aufs Handy."},
+    {t:"Handy als Lernwerkzeug", s:"Lernwerkzeug", d:"Im Unterricht erlaubt, wenn die Lehrkraft es einsetzt.", cost:-300, zus:2, folge:"Lehrkräfte bekommen eine Fortbildung. Manche Stunden werden spannender, manche chaotischer."}
+   ], fallback:2,
+   recht:{art:"Artikel 2 Grundgesetz", text:"Jede Person darf ihre Persönlichkeit frei entfalten, soweit sie die Rechte anderer nicht verletzt (Art. 2).", frage:"Wie viel Einschränkung ist gerechtfertigt, um andere zu schützen?"},
+   tipps:"Zum Warmwerden. Fragt: Wer in der Schulkonferenz hat welche Interessen?"},
+ { stop:"Ausnahmen", ground:"tiles", arts:[P("lock","#9AA3B5"),P("check","#4CC46B"),P("phone","#3E8EF7"),P("whistle","#FFB23F")], place:"Schulkonferenz", typ:"Persönlich betroffen", time:240, title:"Und wer erreichbar sein muss?",
+   special:[{name:"Selin", mood:"frage", style:"scarf", skin:2, hair:0}],
+   text:"Selin pflegt nachmittags ihre kranke Mutter. Sie muss erreichbar sein, falls etwas passiert. Wie geht die Regel damit um?",
+   options:[
+    {t:"Keine Ausnahmen", s:"Keine Ausnahmen", sp:"out", d:"Sonst will jeder eine.", cost:0, zus:-5, warn:"Gleiche Regeln für ungleiche Lagen können Menschen in Not bringen.", folge:"Selin muss das Handy abgeben. Sie ist jeden Tag nervös."},
+    {t:"Ausnahmen auf Antrag", s:"Auf Antrag", sp:"in", d:"Mit kurzem Gespräch bei der Schulleitung, vertraulich.", cost:0, zus:4, folge:"Selin stellt einen Antrag. Niemand außer der Schulleitung kennt den Grund."},
+    {t:"Sekretariat als Notfallnummer", s:"Sekretariat", sp:"in", d:"Angehörige rufen im Notfall dort an.", cost:-50, zus:2, folge:"Das Sekretariat leitet Notrufe weiter. Es funktioniert, ist aber langsamer."},
+    {t:"Lehrkräfte entscheiden im Einzelfall", s:"Einzelfall", sp:"warn", d:"Je nach Lehrkraft.", cost:0, zus:-1, folge:"Manche Lehrkräfte sind großzügig, andere nicht. Selin muss sich ständig erklären."}
+   ], fallback:2,
+   recht:{art:"Artikel 6 Grundgesetz", text:"Ehe und Familie stehen unter dem besonderen Schutz der staatlichen Ordnung (Art. 6).", frage:"Wie schützt eure Regel Selin, ohne ihre Privatsphäre offenzulegen?"},
+   tipps:"Sprecht über Selin. In vielen Klassen gibt es junge Pflegende, die das niemandem erzählen."},
+ { stop:"Umfrage", ground:"tiles", arts:[P("chat","#3E8EF7"),P("eye","#FF4D6D"),P("book","#4CC46B"),P("recycle","#FFB23F")], place:"Schulkonferenz", typ:"Mit Fakten", time:240, title:"Was sagen die Zahlen?",
+   text:"Die Schülervertretung hat eine Umfrage an eurer Schule gemacht. Wie geht ihr mit den Ergebnissen um?",
+   facts:["70 Prozent fühlen sich im Unterricht durch Handys abgelenkt.","40 Prozent nutzen das Handy regelmäßig zum Nachschlagen.","Ein Drittel hat schon fiese Nachrichten in Pausen bekommen."],
+   options:[
+    {t:"Strenge Regel, die Zahlen sprechen dafür", s:"Streng", d:"Die Mehrheit fühlt sich abgelenkt.", cost:0, zus:0, folge:"Ihr setzt auf Strenge. Die 40 Prozent, die nachschlagen, fühlen sich übergangen."},
+    {t:"Kombination: Unterricht aus, Lernphasen an", s:"Kombination", d:"Ablenkung reduzieren, Nutzen erhalten.", cost:0, zus:4, folge:"Die Regel unterscheidet nach Situation. Etwas komplizierter, aber fair."},
+    {t:"Anti-Mobbing-Konzept zuerst", s:"Anti-Mobbing", d:"Das Drittel mit fiesen Nachrichten ist das größte Problem.", cost:-200, zus:3, folge:"Ihr startet Workshops gegen Cybermobbing. Die Handyregel wird erst danach angepasst."},
+    {t:"Erst weitere Daten erheben", s:"Mehr Daten", d:"Eine Umfrage reicht nicht.", cost:-50, zus:-1, warn:"Gründlich, aber das Problem bleibt bestehen, während ihr wartet.", folge:"Die zweite Umfrage dauert zwei Monate. In der Zeit ändert sich nichts."}
+   ], fallback:1,
+   recht:{art:"Artikel 5 Grundgesetz", text:"Jede Person darf sich aus allgemein zugänglichen Quellen ungehindert unterrichten (Art. 5).", frage:"Wie schwer wiegt das Recht auf Information gegen den Schutz vor Ablenkung und Mobbing?"},
+   tipps:"Neu ist: Die Fakten müssen in die Entscheidung. Fragt auch, wie aussagekräftig eine einzelne Umfrage ist."},
+ { stop:"Kontrolle", ground:"tiles", arts:[P("lock","#9AA3B5"),P("eye","#FF4D6D"),P("megaphone","#FFB23F"),P("people","#4CC46B")], place:"Schulkonferenz", typ:"Fakten und Gerechtigkeit", time:180, title:"Wer kontrolliert die Regel?",
+   text:"Die Regel steht. Nun fragen Lehrkräfte: Was dürfen wir tun, wenn jemand sie bricht?",
+   options:[
+    {t:"Einsammeln bis Schulschluss", s:"Einsammeln", d:"Das Handy liegt im Sekretariat.", cost:0, zus:1, folge:"Wer erwischt wird, holt das Handy nach der Schule ab. Das wirkt."},
+    {t:"Handy bei Verdacht durchsuchen", s:"Durchsuchen", d:"Nachschauen, ob jemand etwas Verbotenes macht.", cost:0, zus:-6, warn:"Nachrichten sind durch das Fernmeldegeheimnis und das Persönlichkeitsrecht geschützt. Lehrkräfte dürfen nicht einfach Handys durchsuchen.", folge:"Die erste Durchsuchung führt zu einer Beschwerde. Die Regel muss zurückgenommen werden."},
+    {t:"Erst verwarnen, dann einsammeln", s:"Verwarnen", d:"Eine zweite Chance.", cost:0, zus:3, folge:"Die meisten stecken das Handy nach der ersten Ermahnung weg."},
+    {t:"Eltern informieren", s:"Eltern", d:"Bei jedem Verstoß gibt es eine Nachricht nach Hause.", cost:0, zus:-2, folge:"Die Eltern bekommen viele Nachrichten. Manche Familien haben deshalb Streit."}
+   ], fallback:2,
+   recht:{art:"Artikel 10 und 2 Grundgesetz", text:"Das Brief-, Post- und Fernmeldegeheimnis ist unverletzlich (Art. 10). Dazu kommt das Persönlichkeitsrecht (Art. 2).", frage:"Wo endet die Autorität der Schule, und wo beginnt eure Privatsphäre?"},
+   tipps:"Die rechtliche Lage ist je nach Bundesland und Fall unterschiedlich. Es geht ums Prinzip: Einziehen ist etwas anderes als Durchsuchen."},
+ { stop:"Notfall", ground:"night", arts:[P("eyeoff","#FF4D6D"),P("flag","#20C1B4"),P("megaphone","#FF6B4A"),P("shield","#3E8EF7")], place:"Abends im Stufenchat", typ:"Notfall mit wenig Zeit", time:120, title:"Ein gefälschtes Video",
+   special:[{name:"Herr Okafor", mood:"schlecht", style:"short", skin:5, hair:7, adult:true}],
+   text:"Ein Video verbreitet sich: Herr Okafor, eine beliebte Lehrkraft, soll darin rassistische Dinge sagen. Es ist offensichtlich mit KI gefälscht, die Stimme klingt seltsam. Trotzdem wird es schon geteilt. Ihr habt zwei Minuten.",
+   options:[
+    {t:"Weiterleiten, die Leute sollen selbst urteilen", s:"Weiterleiten", sp:"out", d:"Jeder soll sich ein Bild machen.", cost:0, zus:-7, warn:"Wer eine Fälschung teilt, verbreitet die Verleumdung weiter.", folge:"Das Video landet bei Eltern. Herr Okafor wird angefeindet, obwohl er nichts gesagt hat."},
+    {t:"Melden, nicht teilen, Schulleitung informieren", s:"Melden", sp:"in", d:"Fälschung melden und Herrn Okafor schützen.", cost:0, zus:6, folge:"Die Plattform löscht das Video. Die Schulleitung stellt sich öffentlich hinter Herrn Okafor."},
+    {t:"Darunter kommentieren, dass es Fake ist", s:"Kommentieren", sp:"warn", d:"Aufklären, wo es geteilt wird.", cost:0, zus:1, warn:"Gut gemeint, aber jeder Kommentar lässt das Video weiter oben erscheinen.", folge:"Euer Kommentar bekommt viele Likes, aber das Video auch."},
+    {t:"Ignorieren", s:"Ignorieren", sp:"out", d:"Wird sich schon aufklären.", cost:0, zus:-4, folge:"Das Video verbreitet sich weiter. Erst Tage später klärt sich alles auf."}
+   ], fallback:1,
+   recht:{art:"Artikel 1 und 2 Grundgesetz", text:"Die Würde des Menschen ist unantastbar (Art. 1). Das Persönlichkeitsrecht schützt auch vor gefälschten Bildern und Videos (Art. 2).", frage:"Welche Verantwortung hat jede einzelne Person, die eine Fälschung weiterleitet?"},
+   tipps:"Wenig Zeit. Danach über Deepfakes sprechen: Woran erkennt man Fälschungen, und was tun, wenn man selbst betroffen ist?"}
+]}
+);
+
 /* ================= Hilfen ================= */
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1017,7 +1547,7 @@ function fresh(keep){
     forms:{mehrheit:2,konsens:1,widerstand:1,vertretung:1}, extra:[], form:null, v:null, result:null,
     feel:{gut:0,mittel:0,schlecht:0}, history:[], timer:{total:240,elapsed:0,since:0,running:false,used:0},
     last:null, evDone:false, ask:null, fs:keep.fs||1,
-    allowed:keep.allowed||SCENARIOS.map(()=>true), pm:false, planOn:!!keep.planOn, t0:null, disc:{total:180,elapsed:0,since:0,running:false,started:false}, allowErr:false, chosen:false, ent:{easy:null,how:null,rand:false},
+    allowed:keep.allowed||SCENARIOS.map(()=>true), level:keep.level||null, pm:false, planOn:!!keep.planOn, t0:null, disc:{total:180,elapsed:0,since:0,running:false,started:false}, allowErr:false, chosen:false, ent:{easy:null,how:null,rand:false},
     ct:{total:120,elapsed:0,since:0,running:false,over:false}};
 }
 function freshUrne(n){ return {kind:"auswahl", nOpt:4, n:n||24, stage:"setup", counts:[], sel:null, wsel:[], given:0}; }
@@ -1181,7 +1711,7 @@ function route(){
   const st=stops();
   const cur = S.screen==="title"||S.screen==="forms" ? 0 : S.screen==="end" ? st.length-1 : S.round+1;
   const label = cur===0 ? "Start" : S.screen==="end" ? SC().lastStop : "Station "+cur+" von "+RS().length+" · <b>"+esc(st[cur])+"</b>";
-  return `<div class="mroute"><div class="mr-t">${cur===0?"<b>"+esc(SC().name)+"</b> · Start":S.screen==="end"?"<b>"+esc(SC().lastStop)+"</b>":label}</div><div class="mr-bar"><i style="width:${(cur/(st.length-1)*100).toFixed(1)}%"></i></div></div><nav class="rfull" aria-label="Spielverlauf"><ol style="--p:${(cur/(st.length-1)).toFixed(4)}">${st.map((s,i)=>`<li class="${i<cur?"done":i===cur?"now":""}" ${i===cur?'aria-current="step"':""}><span class="dot"></span>${esc(s).replace(/(Fußball|Kommen|Aus|Eröff|Nach|Wün)(platz|tare|stattung|nung|barin|sche)/,"$1&shy;$2")}</li>`).join("")}</ol></nav>`;
+  return `<div class="mroute"><div class="mr-t">${cur===0?"<b>"+esc(SC().name)+"</b> · Start":S.screen==="end"?"<b>"+esc(SC().lastStop)+"</b>":label}</div><div class="mr-bar"><i style="width:${(cur/(st.length-1)*100).toFixed(1)}%"></i></div></div><nav class="rfull" aria-label="Spielverlauf"><ol style="--p:${(cur/(st.length-1)).toFixed(4)}">${st.map((s,i)=>`<li class="${i<cur?"done":i===cur?"now":""}" ${i===cur?'aria-current="step"':""}><span class="dot"></span>${esc(s).replace(/(Fußball|Kommen|Aus|Eröff|Nach|Wün|Stimm|Wahl|Ein|Protest|Sitz|Frühs|Auf|Ent|Kon|Um)(platz|tare|stattung|nung|barin|sche|recht|kampf|richtung|form|plätze|tück|räumen|scheidung|trolle|frage|setzung)/,"$1&shy;$2")}</li>`).join("")}</ol></nav>`;
 }
 let hudPrev=null;
 function hudBar(){
@@ -1209,11 +1739,13 @@ function hudBar(){
 
 /* ================= Ansichten ================= */
 /* ---- Startseite für Lehrkräfte (eigene, mitwachsende Seite: Handy, Tablet, Rechner) ---- */
-const allowedIdx = () => SCENARIOS.map((_,i)=>i).filter(i=>S.allowed[i]);
+const LEVELS=[{k:"unter",t:"Klasse 5–6",s:"Unterstufe"},{k:"mittel",t:"Klasse 7–9",s:"Mittelstufe"},{k:"ober",t:"ab Klasse 10",s:"Oberstufe"}];
+const levelIdx = () => SCENARIOS.map((_,i)=>i).filter(i=>SCENARIOS[i].level===S.level);
+const allowedIdx = () => levelIdx().filter(i=>S.allowed[i]);
 const bigScreen = () => { try{ return Math.min(window.innerWidth, window.innerHeight) >= 600 && window.innerWidth >= 1000; }catch(e){ return true; } };
 function settingsLink(){
   const base=(()=>{ try{ return location.href.split("#")[0]; }catch(e){ return ""; } })();
-  return base+"#t="+allowedIdx().join(",")+"&m="+(S.mode==="gruppen"?"g":"e")+"&n="+S.n;
+  return base+"#l="+(S.level||"")+"&t="+allowedIdx().join(",")+"&m="+(S.mode==="gruppen"?"g":"e")+"&n="+S.n;
 }
 function acc(id,title,body,open){
   return `<details class="acc" ${open?"open":""}><summary>${title}</summary><div class="acc-b">${body}</div></details>`;
@@ -1224,7 +1756,7 @@ function lehrView(){
   const plan = [["0–10","Einstieg","Die Klasse wählt das Thema und merkt, wie sie entschieden hat."],["10–20","Regeln","Die vier Regeln als Fahrkarten kennenlernen."],["20–75","Fünf Stationen","Je etwa 11 Minuten: diskutieren, Regel wählen, entscheiden, Folgen besprechen."],["75–90","Abschluss","Rückblick auf alle Entscheidungen und Gespräch."]]
     .map(([t,h,d],k)=>`<li><span class="tm k${k}">${t} Min.</span><b>${h}</b><span>${d}</span></li>`).join("");
   const explain = [
-    acc("a1","Worum geht es?",`<p>Die Klasse trifft gemeinsam Entscheidungen und probiert dabei vier Regeln aus. Jede Regel gibt es nur begrenzt oft, die Klasse muss also planen. Nach jeder Station zeigt das Spiel die Folgen, verbindet sie mit einem Artikel aus dem Grundgesetz und gibt Fragen zum Nachdenken. Gedacht für die Mittelstufe.</p>`),
+    acc("a1","Worum geht es?",`<p>Die Klasse trifft gemeinsam Entscheidungen und probiert dabei vier Regeln aus. Jede Regel gibt es nur begrenzt oft, die Klasse muss also planen. Nach jeder Station zeigt das Spiel die Folgen, verbindet sie mit einem Artikel aus dem Grundgesetz und gibt Fragen zum Nachdenken. Es gibt eigene Themen für Klasse 5–6, 7–9 und ab Klasse 10, jeweils in passender Sprache und mit passenden Konflikten.</p>`),
     acc("a3","Der Einstieg: Themenwahl",`<p>Zur Wahl stehen nur die Themen, die ihr freigebt. Die Klasse bekommt keine Regel vorgegeben und hat 2 Minuten. Haltet euch raus und beobachtet: Wer setzt sich durch? Wer sagt nichts? Wird abgestimmt oder gerufen?</p><p>Einigt sich die Klasse nicht, entscheidet der Zufall. Danach fragt das Spiel, wie es lief, und zeigt, welche Regel die Klasse unbewusst benutzt hat.</p>`),
     acc("a4","Die vier Regeln",`<ul class="rl">${formsList}</ul>`),
     acc("a5","Eure Rolle als Spielleitung",`<p>Ihr bedient das Spiel, tragt Stimmen ein und moderiert. Inhaltlich entscheidet die Klasse. Achtet darauf, dass auch leise Stimmen zu Wort kommen. Jede Station hat unten einen aufklappbaren Hinweis für euch.</p><p>Die Diskussionszeit startet ihr per Knopf. Sobald die Klasse eine Regel wählt, läuft die Zeit zum Entscheiden. Beide Uhren lassen sich anhalten und verlängern.</p><p>Oben rechts blendet „Zeitplan“ ein, ob ihr im Plan liegt. Die Uhr beginnt mit „Spiel starten“.</p><p>Einigt sich die Klasse nicht, gibt es „Keine Einigung“: Das Spiel entscheidet nach fester Vorgabe, der Zusammenhalt sinkt.</p>`),
@@ -1232,9 +1764,9 @@ function lehrView(){
     acc("a7","Geheime Abstimmung mit der Wahlurne",urneBox()),
     acc("a8","Datenschutz",`<p>Keine Anmeldung, nichts wird gespeichert. Alles bleibt auf diesem Gerät und ist nach dem Schließen weg. Die Figuren haben ausgedachte Namen. Bitte keine echten Namen aus der Klasse eintragen.</p>`)
   ].join("");
-  const cards = SCENARIOS.map((s,i)=>{ const on=S.allowed[i];
+  const cards = levelIdx().map((i,k)=>{ const s=SCENARIOS[i], on=S.allowed[i];
     return `<div class="lcard ${on?"on":""}">
-      <div class="lc-row"><button type="button" class="lsel" data-act="allow" data-i="${i}" aria-pressed="${on}"><span class="box" aria-hidden="true">${on?"✓":""}</span><span>${on?"Freigegeben":"Nicht freigegeben"}</span></button><span class="sk">${esc(s.kicker)}</span></div>
+      <div class="lc-row"><button type="button" class="lsel" data-act="allow" data-i="${i}" aria-pressed="${on}"><span class="box" aria-hidden="true">${on?"✓":""}</span><span>${on?"Freigegeben":"Nicht freigegeben"}</span></button><span class="sk">Thema ${k+1}</span></div>
       <div class="lc-top"><canvas data-thumb="${i}" width="400" height="400" aria-hidden="true"></canvas>
         <div><div class="sn">${esc(s.name)}</div><p class="st2">${esc(s.teaser)}</p></div></div>
       <p class="lc-st"><b>Stationen:</b> ${s.rounds.map(r=>esc(r.stop)).join(" · ")}</p>
@@ -1254,10 +1786,11 @@ function lehrView(){
   </section>
   <div class="l-steps">
     <div class="l-h1">
-      ${step(1,"Klasse einstellen","Wie viele spielen mit, und entscheidet jede Person einzeln oder in Gruppen?")}
+      ${step(1,"Klasse einstellen","Welche Klassenstufe, wie viele spielen mit, und entscheidet jede Person einzeln oder in Gruppen?")}
     </div>
     <div class="l-main">
       <div class="tbox l-set">
+        <div class="l-lev"><span class="l-lab">Klassenstufe</span><div class="seg2 seg-lev" role="group" aria-label="Klassenstufe">${LEVELS.map(l=>`<button type="button" class="${S.level===l.k?"on":""}" data-act="level" data-v="${l.k}" aria-pressed="${S.level===l.k}"><b>${l.t}</b><small>${l.s}</small></button>`).join("")}</div></div>
         <div class="seg2" role="group" aria-label="Spielweise"><button type="button" class="${g?"":"on"}" data-act="mode" data-v="einzeln" aria-pressed="${!g}">Einzeln</button><button type="button" class="${g?"on":""}" data-act="mode" data-v="gruppen" aria-pressed="${g}">In Gruppen</button></div>
         <div class="setline"><span>${g?"Anzahl Gruppen":"Anzahl Schüler*innen"}</span><button type="button" id="setn-m" class="btn ghost sm" data-act="setn" data-d="-1" aria-label="weniger">−</button><span class="val">${S.n}</span><button type="button" id="setn-p" class="btn ghost sm" data-act="setn" data-d="1" aria-label="mehr">+</button></div>
         ${g?`<div class="chips-sel l-teams">${S.groups.map((_,i)=>`<span class="team static"><i class="tdot" style="background:${teamCol(i)}"></i>Team ${esc(teamName(i))}</span>`).join("")}</div>`:""}
@@ -1265,13 +1798,13 @@ function lehrView(){
       <section class="l-step">
         ${step(2,"Themen freigeben","Die Klasse wählt zu Beginn selbst aus diesen Themen. Gebt nur frei, was gerade passt, zum Beispiel nichts zu Cybermobbing bei einem aktuellen Fall. Mindestens zwei.")}
         ${S.allowErr?`<p class="note bad shake" role="alert">Mindestens zwei Themen müssen freigegeben sein.</p>`:""}
-        <div class="lcards">${cards}</div>
+        ${S.level?`<div class="lcards">${cards}</div>`:`<p class="l-wait">Wählt zuerst in Schritt 1 die Klassenstufe. Die Themen hängen davon ab.</p>`}
       </section>
       <section class="l-step">
         ${step(3,"Spiel starten",dev)}
         ${hosted()?`<div class="linkline"><code id="setLink">${esc(settingsLink())}</code><button type="button" class="btn ghost sm" id="copySet" data-act="copy-set">Link kopieren</button></div>`:""}
-        <button type="button" class="btn gelb huge pulse l-start" data-act="to-title" ${nA<2?"disabled":""}>Spiel starten</button>
-        <p class="l-foot">${nA} Themen stehen zur Wahl · ${g?S.n+" Gruppen":S.n+" Schüler*innen"}</p>
+        <button type="button" class="btn gelb huge pulse l-start" data-act="to-title" ${(!S.level||nA<2)?"disabled":""}>Spiel starten</button>
+        <p class="l-foot">${S.level?LEVELS.find(l=>l.k===S.level).t+" · "+nA+" Themen stehen zur Wahl · "+(g?S.n+" Gruppen":S.n+" Schüler*innen"):"Zuerst die Klassenstufe wählen"}</p>
       </section>
     </div>
   </div>`;
@@ -2196,7 +2729,13 @@ const ICON={
   jar(c){ RR(-15,-14,30,36,9); FL("rgba(200,235,255,.9)",3.5); RR(-17,-22,34,9,3); FL(c,3); EL(-4,14,8,4); FL("#FFD23F",2); EL(5,8,8,4); FL("#FFD23F",2); RR(-5,-20,10,3,1); FL(OL,0); },
   cake(c){ RR(-22,0,44,20,4); FL(c,3.5); RR(-16,-14,32,15,4); FL(W2,3); g.beginPath(); g.moveTo(-22,4); for(let k=0;k<6;k++) g.quadraticCurveTo(-18+k*8,10,-14+k*8,4); ST(W2,3); RR(-2,-26,4,12,1); FL("#3E8EF7",2); EL(0,-29,3,4); g.fillStyle="#FFD23F"; g.fill(); },
   building(c){ RR(-20,-16,40,40,3); FL(c,3.5); PL([[-24,-14],[0,-28],[24,-14]]); FL(shade(c,.75),3.5); for(let r=0;r<2;r++) for(let k=0;k<3;k++){ RR(-14+k*10,-8+r*11,6,7,1); g.fillStyle=W2; g.fill(); } RR(-5,12,10,12,2); FL(OL,0); },
-  smile(c){ CI(0,0,22); FL(c,3.5); CI(-7,-5,3); FL(OL,0); CI(7,-5,3); FL(OL,0); g.beginPath(); g.arc(0,2,11,0.15*Math.PI,0.85*Math.PI); ST(OL,3.5); HL(-8,-12,5,3,.45); }
+  smile(c){ CI(0,0,22); FL(c,3.5); CI(-7,-5,3); FL(OL,0); CI(7,-5,3); FL(OL,0); g.beginPath(); g.arc(0,2,11,0.15*Math.PI,0.85*Math.PI); ST(OL,3.5); HL(-8,-12,5,3,.45); },
+  paw(c){ EL(0,9,13,11); FL(c,3.5); [[-15,-5],[-6,-14],[6,-14],[15,-5]].forEach(([x,y])=>{ EL(x,y,5.5,6.5); FL(c,3); }); },
+  tree(c){ RR(-4,4,8,20,2); FL("#8B5A2B",3); CI(-9,-4,11); FL(c,3); CI(9,-4,11); FL(c,3); CI(0,-14,13); FL(c,3); g.fillStyle=shade(c,1.15); CI(-3,-17,5); g.fill(); },
+  drop(c){ g.beginPath(); g.moveTo(0,-24); g.bezierCurveTo(6,-12,18,0,18,8); g.arc(0,8,18,0,Math.PI); g.bezierCurveTo(-18,0,-6,-12,0,-24); g.closePath(); FL(c,3.5); HL(-6,6,4,7,.5); },
+  bike(c){ CI(-13,10,10); ST(OL,4); CI(13,10,10); ST(OL,4); g.beginPath(); g.moveTo(-13,10); g.lineTo(-3,-6); g.lineTo(11,-6); g.lineTo(13,10); g.moveTo(-3,-6); g.lineTo(2,10); g.lineTo(11,-6); ST(OL,7); g.beginPath(); g.moveTo(-13,10); g.lineTo(-3,-6); g.lineTo(11,-6); g.lineTo(13,10); g.moveTo(-3,-6); g.lineTo(2,10); g.lineTo(11,-6); ST(c,3.5); RR(-9,-12,10,4,2); FL(OL,0); LN(9,-6,7,-14); ST(OL,3); },
+  racket(c){ g.save(); g.rotate(-0.6); RR(-3.5,8,7,18,3); FL("#C48A55",3); EL(0,-6,13,15); FL(c,3.5); g.strokeStyle="rgba(255,255,255,.8)"; g.lineWidth=1.5; for(let k=-8;k<=8;k+=4){ LN(k,-18,k,6); g.stroke(); LN(-11,k-6,11,k-6); g.stroke(); } g.restore(); CI(14,-14,5); FL("#FFFFFF",2.5); },
+  wifi(c){ [22,15,8].forEach((r,k)=>{ g.beginPath(); g.arc(0,12,r,-Math.PI*0.78,-Math.PI*0.22); g.lineCap="round"; ST(OL,8); g.beginPath(); g.arc(0,12,r,-Math.PI*0.78,-Math.PI*0.22); ST(c,4.5); }); CI(0,12,4); FL(c,2.5); },
 };
 function icon(name,x,y,s,col){
   const f=ICON[name]; if(!f) return;
@@ -2371,7 +2910,7 @@ function clickFx(e,b){
 
 /* ================= Aktionen ================= */
 function newGame(){
-  S=fresh({sc:S.sc, mode:S.mode, n:S.n, groups:S.groups, fs:S.fs, allowed:S.allowed, planOn:S.planOn});
+  S=fresh({sc:S.sc, mode:S.mode, n:S.n, groups:S.groups, fs:S.fs, allowed:S.allowed, planOn:S.planOn, level:S.level});
   S.budget=SC().money.start;
   hudPrev=null; W.scene=null; W.burstKey=""; W.bus.x=-220;
   makeFigures();
@@ -2417,6 +2956,7 @@ function act(a, d){
     case "ask-reset": S.ask="reset"; break;
     case "ask-cancel": S.ask=null; break;
     case "restart": newGame(); try{ window.scrollTo(0,0); }catch(e){} break;
+    case "level": S.level=d.v; S.allowErr=false; break;
     case "allow": {
       const i=+d.i;
       if(S.allowed[i] && allowedIdx().length<=2){ S.allowErr=true; break; }
@@ -2444,7 +2984,7 @@ function act(a, d){
     }
     case "mode": S.mode=d.v; S.n = d.v==="gruppen" ? 4 : 24; makeGroups(); makeFigures(); break;
     case "setn": { const gr=S.mode==="gruppen"; S.n=clamp(S.n+(+d.d), gr?2:5, gr?8:32); makeGroups(); makeFigures(); break; }
-    case "to-title": if(allowedIdx().length<2){ S.allowErr=true; break; } newGame(); S.sc=allowedIdx()[0]; S.screen="title"; S.t0=Date.now(); try{ window.scrollTo(0,0); }catch(e){} break;
+    case "to-title": if(!S.level) return; if(allowedIdx().length<2){ S.allowErr=true; break; } newGame(); S.sc=allowedIdx()[0]; S.screen="title"; S.t0=Date.now(); try{ window.scrollTo(0,0); }catch(e){} break;
     case "go": playIntro(); return;
     case "start-game": S.screen="round"; S.round=0; resetRound(); break;
     case "add-own": {
@@ -2516,7 +3056,8 @@ function start(data){
     else if(hash.indexOf("t=")>=0){
       const q={}; hash.slice(1).split("&").forEach(p=>{ const k=p.split("="); q[k[0]]=decodeURIComponent(k[1]||""); });
       const t=(q.t||"").split(",").map(Number).filter(i=>i>=0 && i<SCENARIOS.length);
-      if(t.length>=2) S.allowed=SCENARIOS.map((_,i)=>t.includes(i));
+      if(["unter","mittel","ober"].includes(q.l)) S.level=q.l;
+      if(t.length>=2) S.allowed=SCENARIOS.map((_,i)=>t.includes(i) || SCENARIOS[i].level!==S.level);
       if(q.m==="g"){ S.mode="gruppen"; S.n=clamp(parseInt(q.n,10)||4,2,8); makeGroups(); }
       else if(q.n){ S.n=clamp(parseInt(q.n,10)||24,5,32); }
     }
